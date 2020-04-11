@@ -1,3 +1,4 @@
+import 'package:erasmusopportunities/screens/authenticate/authenticate.dart';
 import 'package:erasmusopportunities/screens/home/home.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +7,6 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
 
     // Return either Home or Authenticate widget
-    return Home();
+    return Authenticate();
   }
 }
