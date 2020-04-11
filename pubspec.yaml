@@ -23,7 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  provider: ^4.0.5
   cloud_firestore: ^0.12.9+4
 
 
