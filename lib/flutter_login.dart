@@ -214,6 +214,7 @@ class FlutterLogin extends StatefulWidget {
     this.theme,
     this.emailValidator,
     this.passwordValidator,
+    this.plainValidator,
     this.onSubmitAnimationCompleted,
     this.logoTag,
     this.titleTag,
@@ -251,6 +252,9 @@ class FlutterLogin extends StatefulWidget {
   /// Same as [emailValidator] but for password
   final FormFieldValidator<String> passwordValidator;
 
+  /// Validating not empty values
+  final FormFieldValidator<String> plainValidator;
+
   /// Called after the submit animation's completed. Put your route transition
   /// logic here. Recommend to use with [logoTag] and [titleTag]
   final Function onSubmitAnimationCompleted;
@@ -279,6 +283,13 @@ class FlutterLogin extends StatefulWidget {
   static final FormFieldValidator<String> defaultPasswordValidator = (value) {
     if (value.isEmpty || value.length <= 2) {
       return 'Password is too short!';
+    }
+    return null;
+  };
+
+  static final FormFieldValidator<String> defaultPlainValidator = (value) {
+    if (value.isEmpty) {
+      return 'Required!';
     }
     return null;
   };
@@ -540,6 +551,8 @@ class _FlutterLoginState extends State<FlutterLogin>
         widget.emailValidator ?? FlutterLogin.defaultEmailValidator;
     final passwordValidator =
         widget.passwordValidator ?? FlutterLogin.defaultPasswordValidator;
+    final plainValidator =
+        widget.plainValidator ?? FlutterLogin.defaultPlainValidator;
 
     return MultiProvider(
       providers: [
@@ -579,6 +592,7 @@ class _FlutterLoginState extends State<FlutterLogin>
                         loadingController: _loadingController,
                         emailValidator: emailValidator,
                         passwordValidator: passwordValidator,
+                        plainValidator: plainValidator,
                         onSubmit: _reverseHeaderAnimation,
                         onSubmitCompleted: widget.onSubmitAnimationCompleted,
                       ),

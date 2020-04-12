@@ -26,6 +26,7 @@ class AuthCard extends StatefulWidget {
     this.loadingController,
     this.emailValidator,
     this.passwordValidator,
+    this.plainValidator,
     this.onSubmit,
     this.onSubmitCompleted,
   }) : super(key: key);
@@ -34,6 +35,7 @@ class AuthCard extends StatefulWidget {
   final AnimationController loadingController;
   final FormFieldValidator<String> emailValidator;
   final FormFieldValidator<String> passwordValidator;
+  final FormFieldValidator<String> plainValidator;
   final Function onSubmit;
   final Function onSubmitCompleted;
 
@@ -288,6 +290,7 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
                         : (_formLoadingController..value = 1.0),
                     emailValidator: widget.emailValidator,
                     passwordValidator: widget.passwordValidator,
+                    plainValidator: widget.plainValidator,
                     onSwitchRecoveryPassword: () => _switchRecovery(true),
                     onSubmitCompleted: () {
                       _forwardChangeRouteAnimation().then((_) {
@@ -331,6 +334,7 @@ class _LoginCard extends StatefulWidget {
     this.loadingController,
     @required this.emailValidator,
     @required this.passwordValidator,
+    @required this.plainValidator,
     @required this.onSwitchRecoveryPassword,
     this.onSwitchAuth,
     this.onSubmitCompleted,
@@ -339,6 +343,7 @@ class _LoginCard extends StatefulWidget {
   final AnimationController loadingController;
   final FormFieldValidator<String> emailValidator;
   final FormFieldValidator<String> passwordValidator;
+  final FormFieldValidator<String> plainValidator;
   final Function onSwitchRecoveryPassword;
   final Function onSwitchAuth;
   final Function onSubmitCompleted;
@@ -556,6 +561,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       controller: _organisationNameController,
       textInputAction: TextInputAction.next,
       focusNode: _organisationNameFocusNode,
+      validator: widget.plainValidator,
       onFieldSubmitted: (value) => _submit(),
       onSaved: (value) => auth.organisationName = value,
     );
@@ -572,6 +578,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       controller: _organisationLocationController,
       textInputAction: TextInputAction.next,
       focusNode: _organisationLocationFocusNode,
+      validator: widget.plainValidator,
       onFieldSubmitted: (value) => _submit(),
       onSaved: (value) => auth.organisationLocation = value,
     );
