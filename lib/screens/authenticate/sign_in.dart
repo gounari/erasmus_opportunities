@@ -40,9 +40,13 @@ class _SignInState extends State<SignIn> {
             child: Container(
               width: MediaQuery.of(context).size.width/2.2,
               height: MediaQuery.of(context).size.height,
-              child: Image.asset(
-                '/Users/argyrodevelop/AndroidStudioProjects/erasmus_opportunities/lib/assets/onboarding2.jpg',
-                fit: BoxFit.fill,
+              child: Row(
+                children: <Widget>[
+                  Image.asset(
+                    '/Users/argyrodevelop/AndroidStudioProjects/erasmus_opportunities/lib/assets/onboarding2.jpg',
+                    fit: BoxFit.fill,
+                  ),
+              ],
               ),
             ),
           ),
