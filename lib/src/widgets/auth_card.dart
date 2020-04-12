@@ -570,13 +570,13 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
   }
 
   Widget _buildOrganisationNameField(double width, LoginMessages messages, Auth auth) {
-    return AnimatedPasswordTextFormField(
+    return AnimatedNameTextFormField(
       animatedWidth: width,
       enabled: auth.isSignup,
       loadingController: _loadingController,
       inertiaController: _postSwitchAuthController,
       inertiaDirection: TextFieldInertiaDirection.right,
-      labelText: messages.confirmPasswordHint,
+      labelText: messages.organisationNameHint,
       controller: _organisationNameController,
       textInputAction: TextInputAction.next,
       focusNode: _organisationNameFocusNode,

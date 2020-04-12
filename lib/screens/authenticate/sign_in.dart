@@ -36,8 +36,8 @@ class SignIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
-      title: 'ECORP',
-      logo: 'assets/images/ecorp-lightblue.png',
+      title: '',
+      logo: '/Users/argyrodevelop/AndroidStudioProjects/erasmus_opportunities/lib/assets/branding/logo.png',
       onLogin: _authUser,
       onSignup: _authUser,
       onSubmitAnimationCompleted: () {
