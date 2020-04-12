@@ -352,10 +352,12 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
   final _passwordFocusNode = FocusNode();
   final _organisationNameFocusNode = FocusNode();
+  final _organisationLocationFocusNode = FocusNode();
 
   TextEditingController _nameController;
   TextEditingController _passController;
   TextEditingController _organisationNameController;
+  TextEditingController _organisationLocationController;
 
   var _isLoading = false;
   var _isSubmitting = false;
@@ -382,6 +384,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     _nameController = TextEditingController(text: auth.email);
     _passController = TextEditingController(text: auth.password);
     _organisationNameController = TextEditingController(text: auth.organisationName);
+    _organisationLocationController = TextEditingController(text: auth.organisationLocation);
 
     _loadingController = widget.loadingController ??
         (AnimationController(
@@ -432,6 +435,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     _loadingController?.removeStatusListener(handleLoadingAnimationStatus);
     _passwordFocusNode.dispose();
     _organisationNameFocusNode.dispose();
+    _organisationLocationFocusNode.dispose();
 
     _switchAuthController.dispose();
     _postSwitchAuthController.dispose();
@@ -533,6 +537,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
         } else {
           // SignUp
           FocusScope.of(context).requestFocus(_organisationNameFocusNode);
+          FocusScope.of(context).requestFocus(_organisationLocationFocusNode);
         }
       },
       validator: widget.passwordValidator,
@@ -553,6 +558,22 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       focusNode: _organisationNameFocusNode,
       onFieldSubmitted: (value) => _submit(),
       onSaved: (value) => auth.organisationName = value,
+    );
+  }
+
+  Widget _buildOrganisationLocationField(double width, LoginMessages messages, Auth auth) {
+    return AnimatedLocationTextFormField(
+      animatedWidth: width,
+      enabled: auth.isSignup,
+      loadingController: _loadingController,
+      inertiaController: _postSwitchAuthController,
+      inertiaDirection: TextFieldInertiaDirection.right,
+      labelText: messages.organisationLocationHint,
+      controller: _organisationLocationController,
+      textInputAction: TextInputAction.next,
+      focusNode: _organisationLocationFocusNode,
+      onFieldSubmitted: (value) => _submit(),
+      onSaved: (value) => auth.organisationLocation = value,
     );
   }
 
@@ -654,6 +675,22 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
             ),
             onExpandCompleted: () => _postSwitchAuthController.forward(),
             child: _buildOrganisationNameField(textFieldWidth, messages, auth),
+          ),
+          ExpandableContainer(
+            backgroundColor: theme.accentColor,
+            controller: _switchAuthController,
+            initialState: isLogin
+                ? ExpandableContainerState.shrunk
+                : ExpandableContainerState.expanded,
+            alignment: Alignment.topLeft,
+            color: theme.cardTheme.color,
+            width: cardWidth,
+            padding: EdgeInsets.symmetric(
+              horizontal: cardPadding,
+              vertical: 10,
+            ),
+            onExpandCompleted: () => _postSwitchAuthController.forward(),
+            child: _buildOrganisationLocationField(textFieldWidth, messages, auth),
           ),
           Container(
             padding: Paddings.fromRBL(cardPadding),

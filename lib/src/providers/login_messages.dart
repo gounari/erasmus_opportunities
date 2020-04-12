@@ -7,6 +7,7 @@ class LoginMessages with ChangeNotifier {
     this.passwordHint: defaultPasswordHint,
     this.confirmPasswordHint: defaultConfirmPasswordHint,
     this.organisationNameHint: defaultOrganisationNameHint,
+    this.organisationLocationHint: defaultOrganisationLocationHint,
     this.forgotPasswordButton: defaultForgotPasswordButton,
     this.loginButton: defaultLoginButton,
     this.signupButton: defaultSignupButton,
@@ -22,6 +23,7 @@ class LoginMessages with ChangeNotifier {
   static const defaultPasswordHint = 'Password';
   static const defaultConfirmPasswordHint = 'Confirm Password';
   static const defaultOrganisationNameHint = 'Organisation Name';
+  static const defaultOrganisationLocationHint = 'Organisation Location';
   static const defaultForgotPasswordButton = 'Forgot Password?';
   static const defaultLoginButton = 'LOGIN';
   static const defaultSignupButton = 'SIGNUP';
@@ -44,6 +46,9 @@ class LoginMessages with ChangeNotifier {
 
   /// Hint text of the organisation name [TextField]
   final String organisationNameHint;
+
+  /// Hint text of the organisation location [TextField]
+  final String organisationLocationHint;
 
   /// Forgot password button's label
   final String forgotPasswordButton;
