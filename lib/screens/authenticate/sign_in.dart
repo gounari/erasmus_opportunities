@@ -1,3 +1,4 @@
+import 'package:erasmusopportunities/screens/home/home.dart';
 import 'package:erasmusopportunities/screens/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -5,52 +6,52 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:intl/intl.dart';
+const users = const {
+  'dribbble@gmail.com': '12345',
+  'hunter@gmail.com': 'hunter',
+};
 
-class SignIn extends StatefulWidget {
-  @override
-  _SignInState createState() => _SignInState();
-}
+class SignIn extends StatelessWidget {
+  Duration get loginTime => Duration(milliseconds: 2250);
 
-class _SignInState extends State<SignIn> {
+  Future<String> _authUser(LoginData data) {
+    print('Name: ${data.name}, Password: ${data.password}');
+    return Future.delayed(loginTime).then((_) {
+      if (!users.containsKey(data.name)) {
+        return 'Username not exists';
+      }
+      if (users[data.name] != data.password) {
+        return 'Password does not match';
+      }
+      return null;
+    });
+  }
 
-  final AuthService _auth = AuthService();
+  Future<String> _recoverPassword(String name) {
+    print('Name: $name');
+    return Future.delayed(loginTime).then((_) {
+      if (!users.containsKey(name)) {
+        return 'Username not exists';
+      }
+      return null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [
-              Color.fromRGBO(0, 68, 148, 0.3),
-                Color.fromRGBO(0, 68, 148, 1.0),
-              ]
-          )
-      ),
-      alignment: Alignment(0.0, 0.0),
-      child: FlipCard(
-          front: Container(
-            child: Text('Front'),
-          ),
-          back: Card(
-            elevation: 10.0,
-            color: Color.fromRGBO(231, 236, 239, 1.0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            child: Container(
-              width: MediaQuery.of(context).size.width/2.2,
-              height: MediaQuery.of(context).size.height,
-              child: Row(
-                children: <Widget>[
-                  Image.asset(
-                    '/Users/argyrodevelop/AndroidStudioProjects/erasmus_opportunities/lib/assets/onboarding2.jpg',
-                    fit: BoxFit.fill,
-                  ),
-              ],
-              ),
-            ),
-          ),
-        ),
+    return FlutterLogin(
+      title: 'ECORP',
+      logo: 'assets/images/ecorp-lightblue.png',
+      onLogin: _authUser,
+      onSignup: _authUser,
+      onSubmitAnimationCompleted: () {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => Home(),
+        ));
+      },
+      onRecoverPassword: _recoverPassword,
     );
   }
 }
