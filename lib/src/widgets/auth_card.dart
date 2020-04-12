@@ -352,10 +352,12 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
   final _passwordFocusNode = FocusNode();
   final _confirmPasswordFocusNode = FocusNode();
+  final _organisationNameFocusNode = FocusNode();
 
   TextEditingController _nameController;
   TextEditingController _passController;
   TextEditingController _confirmPassController;
+  TextEditingController _organisationNameController;
 
   var _isLoading = false;
   var _isSubmitting = false;
@@ -382,6 +384,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     _nameController = TextEditingController(text: auth.email);
     _passController = TextEditingController(text: auth.password);
     _confirmPassController = TextEditingController(text: auth.confirmPassword);
+    _organisationNameController = TextEditingController(text: auth.organisationName);
 
     _loadingController = widget.loadingController ??
         (AnimationController(
@@ -432,6 +435,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     _loadingController?.removeStatusListener(handleLoadingAnimationStatus);
     _passwordFocusNode.dispose();
     _confirmPasswordFocusNode.dispose();
+    _organisationNameFocusNode.dispose();
 
     _switchAuthController.dispose();
     _postSwitchAuthController.dispose();
@@ -467,12 +471,12 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
     if (auth.isLogin) {
       error = await auth.onLogin(LoginData(
-        name: auth.email,
+        email: auth.email,
         password: auth.password,
       ));
     } else {
       error = await auth.onSignup(LoginData(
-        name: auth.email,
+        email: auth.email,
         password: auth.password,
       ));
     }
@@ -533,6 +537,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
         } else {
           // SignUp
           FocusScope.of(context).requestFocus(_confirmPasswordFocusNode);
+          FocusScope.of(context).requestFocus(_organisationNameFocusNode);
         }
       },
       validator: widget.passwordValidator,
@@ -549,7 +554,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       inertiaDirection: TextFieldInertiaDirection.right,
       labelText: messages.confirmPasswordHint,
       controller: _confirmPassController,
-      textInputAction: TextInputAction.done,
+      textInputAction: TextInputAction.next,
       focusNode: _confirmPasswordFocusNode,
       onFieldSubmitted: (value) => _submit(),
       validator: auth.isSignup
@@ -561,6 +566,41 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
             }
           : (value) => null,
       onSaved: (value) => auth.confirmPassword = value,
+    );
+  }
+
+  Widget _buildOrganisationNameField(double width, LoginMessages messages, Auth auth) {
+    return AnimatedPasswordTextFormField(
+      animatedWidth: width,
+      enabled: auth.isSignup,
+      loadingController: _loadingController,
+      inertiaController: _postSwitchAuthController,
+      inertiaDirection: TextFieldInertiaDirection.right,
+      labelText: messages.confirmPasswordHint,
+      controller: _organisationNameController,
+      textInputAction: TextInputAction.next,
+      focusNode: _organisationNameFocusNode,
+      onFieldSubmitted: (value) => _submit(),
+      validator:  widget.emailValidator,
+      onSaved: (value) => auth.organisationName = value,
+    );
+  }
+
+  Widget _buildOrganisationLocationField(double width, LoginMessages messages, Auth auth) {
+    return AnimatedTextFormField(
+      controller: _nameController,
+      width: width,
+      loadingController: _loadingController,
+      interval: _nameTextFieldLoadingAnimationInterval,
+      labelText: messages.usernameHint,
+      prefixIcon: Icon(FontAwesomeIcons.solidUserCircle),
+      keyboardType: TextInputType.text,
+      textInputAction: TextInputAction.done,
+      onFieldSubmitted: (value) {
+        FocusScope.of(context).requestFocus(_passwordFocusNode);
+      },
+      validator: widget.emailValidator,
+      onSaved: (value) => auth.organisationLocation = value,
     );
   }
 
@@ -662,6 +702,38 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
             ),
             onExpandCompleted: () => _postSwitchAuthController.forward(),
             child: _buildConfirmPasswordField(textFieldWidth, messages, auth),
+          ),
+          ExpandableContainer(
+            backgroundColor: theme.accentColor,
+            controller: _switchAuthController,
+            initialState: isLogin
+                ? ExpandableContainerState.shrunk
+                : ExpandableContainerState.expanded,
+            alignment: Alignment.topLeft,
+            color: theme.cardTheme.color,
+            width: cardWidth,
+            padding: EdgeInsets.symmetric(
+              horizontal: cardPadding,
+              vertical: 10,
+            ),
+            onExpandCompleted: () => _postSwitchAuthController.forward(),
+            child: _buildOrganisationNameField(textFieldWidth, messages, auth),
+          ),
+          ExpandableContainer(
+            backgroundColor: theme.accentColor,
+            controller: _switchAuthController,
+            initialState: isLogin
+                ? ExpandableContainerState.shrunk
+                : ExpandableContainerState.expanded,
+            alignment: Alignment.topLeft,
+            color: theme.cardTheme.color,
+            width: cardWidth,
+            padding: EdgeInsets.symmetric(
+              horizontal: cardPadding,
+              vertical: 10,
+            ),
+            onExpandCompleted: () => _postSwitchAuthController.forward(),
+            child: _buildOrganisationLocationField(textFieldWidth, messages, auth),
           ),
           Container(
             padding: Paddings.fromRBL(cardPadding),

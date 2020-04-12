@@ -18,9 +18,13 @@ class Auth with ChangeNotifier {
     String email = '',
     String password = '',
     String confirmPassword = '',
+    String organisationName = '',
+    String organisationLocation = '',
   })  : this._email = email,
         this._password = password,
-        this._confirmPassword = confirmPassword;
+        this._confirmPassword = confirmPassword,
+        this._organisationName = organisationName,
+        this._organisationLocation = organisationLocation;
 
   final AuthCallback onLogin;
   final AuthCallback onSignup;
@@ -69,6 +73,20 @@ class Auth with ChangeNotifier {
   get confirmPassword => _confirmPassword;
   set confirmPassword(String confirmPassword) {
     _confirmPassword = confirmPassword;
+    notifyListeners();
+  }
+
+  String _organisationName = '';
+  get organisationName => _organisationName;
+  set organisationName(String organisationName) {
+    _organisationName = organisationName;
+    notifyListeners();
+  }
+
+  String _organisationLocation = '';
+  get organisationLocation => _organisationLocation;
+  set organisationLocation(String organisationLocation) {
+    _organisationLocation = organisationLocation;
     notifyListeners();
   }
 }
