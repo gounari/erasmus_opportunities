@@ -351,12 +351,10 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   final _passwordFocusNode = FocusNode();
-  final _confirmPasswordFocusNode = FocusNode();
   final _organisationNameFocusNode = FocusNode();
 
   TextEditingController _nameController;
   TextEditingController _passController;
-  TextEditingController _confirmPassController;
   TextEditingController _organisationNameController;
 
   var _isLoading = false;
@@ -383,7 +381,6 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
     final auth = Provider.of<Auth>(context, listen: false);
     _nameController = TextEditingController(text: auth.email);
     _passController = TextEditingController(text: auth.password);
-    _confirmPassController = TextEditingController(text: auth.confirmPassword);
     _organisationNameController = TextEditingController(text: auth.organisationName);
 
     _loadingController = widget.loadingController ??
@@ -434,7 +431,6 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
     _loadingController?.removeStatusListener(handleLoadingAnimationStatus);
     _passwordFocusNode.dispose();
-    _confirmPasswordFocusNode.dispose();
     _organisationNameFocusNode.dispose();
 
     _switchAuthController.dispose();
@@ -536,36 +532,11 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
           _submit();
         } else {
           // SignUp
-          FocusScope.of(context).requestFocus(_confirmPasswordFocusNode);
           FocusScope.of(context).requestFocus(_organisationNameFocusNode);
         }
       },
       validator: widget.passwordValidator,
       onSaved: (value) => auth.password = value,
-    );
-  }
-
-  Widget _buildConfirmPasswordField(double width, LoginMessages messages, Auth auth) {
-    return AnimatedPasswordTextFormField(
-      animatedWidth: width,
-      enabled: auth.isSignup,
-      loadingController: _loadingController,
-      inertiaController: _postSwitchAuthController,
-      inertiaDirection: TextFieldInertiaDirection.right,
-      labelText: messages.confirmPasswordHint,
-      controller: _confirmPassController,
-      textInputAction: TextInputAction.next,
-      focusNode: _confirmPasswordFocusNode,
-      onFieldSubmitted: (value) => _submit(),
-      validator: auth.isSignup
-          ? (value) {
-              if (value != _passController.text) {
-                return messages.confirmPasswordError;
-              }
-              return null;
-            }
-          : (value) => null,
-      onSaved: (value) => auth.confirmPassword = value,
     );
   }
 
@@ -581,26 +552,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       textInputAction: TextInputAction.next,
       focusNode: _organisationNameFocusNode,
       onFieldSubmitted: (value) => _submit(),
-      validator:  widget.emailValidator,
       onSaved: (value) => auth.organisationName = value,
-    );
-  }
-
-  Widget _buildOrganisationLocationField(double width, LoginMessages messages, Auth auth) {
-    return AnimatedTextFormField(
-      controller: _nameController,
-      width: width,
-      loadingController: _loadingController,
-      interval: _nameTextFieldLoadingAnimationInterval,
-      labelText: messages.usernameHint,
-      prefixIcon: Icon(FontAwesomeIcons.solidUserCircle),
-      keyboardType: TextInputType.text,
-      textInputAction: TextInputAction.done,
-      onFieldSubmitted: (value) {
-        FocusScope.of(context).requestFocus(_passwordFocusNode);
-      },
-      validator: widget.emailValidator,
-      onSaved: (value) => auth.organisationLocation = value,
     );
   }
 
@@ -701,39 +653,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
               vertical: 10,
             ),
             onExpandCompleted: () => _postSwitchAuthController.forward(),
-            child: _buildConfirmPasswordField(textFieldWidth, messages, auth),
-          ),
-          ExpandableContainer(
-            backgroundColor: theme.accentColor,
-            controller: _switchAuthController,
-            initialState: isLogin
-                ? ExpandableContainerState.shrunk
-                : ExpandableContainerState.expanded,
-            alignment: Alignment.topLeft,
-            color: theme.cardTheme.color,
-            width: cardWidth,
-            padding: EdgeInsets.symmetric(
-              horizontal: cardPadding,
-              vertical: 10,
-            ),
-            onExpandCompleted: () => _postSwitchAuthController.forward(),
             child: _buildOrganisationNameField(textFieldWidth, messages, auth),
-          ),
-          ExpandableContainer(
-            backgroundColor: theme.accentColor,
-            controller: _switchAuthController,
-            initialState: isLogin
-                ? ExpandableContainerState.shrunk
-                : ExpandableContainerState.expanded,
-            alignment: Alignment.topLeft,
-            color: theme.cardTheme.color,
-            width: cardWidth,
-            padding: EdgeInsets.symmetric(
-              horizontal: cardPadding,
-              vertical: 10,
-            ),
-            onExpandCompleted: () => _postSwitchAuthController.forward(),
-            child: _buildOrganisationLocationField(textFieldWidth, messages, auth),
           ),
           Container(
             padding: Paddings.fromRBL(cardPadding),
