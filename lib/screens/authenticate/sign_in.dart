@@ -1,4 +1,5 @@
 import 'package:erasmusopportunities/screens/home/home.dart';
+import 'package:erasmusopportunities/src/models/signup_data.dart';
 import 'package:flutter/material.dart';
 import 'package:erasmusopportunities/flutter_login.dart';
 
@@ -10,8 +11,21 @@ const users = const {
 class SignIn extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
 
-  Future<String> _authUser(LoginData data) {
-    print('Name: ${data.email}, Password: ${data.password}');
+  Future<String> _signInUser(LoginData data) {
+    print('Login: \nEmail: ${data.email}, Password: ${data.password}');
+    return Future.delayed(loginTime).then((_) {
+      if (!users.containsKey(data.email)) {
+        return 'Username not exists';
+      }
+      if (users[data.email] != data.password) {
+        return 'Password does not match';
+      }
+      return null;
+    });
+  }
+
+  Future<String> _signUpUser(SignUpData data) {
+    print('SignUp: \nEmail: ${data.email}, Password: ${data.password}, Name: ${data.organisationName}, Location: ${data.organisationLocation}');
     return Future.delayed(loginTime).then((_) {
       if (!users.containsKey(data.email)) {
         return 'Username not exists';
@@ -38,8 +52,8 @@ class SignIn extends StatelessWidget {
     return FlutterLogin(
       title: '',
       logo: '/Users/argyrodevelop/AndroidStudioProjects/erasmus_opportunities/lib/assets/branding/logo.png',
-      onLogin: _authUser,
-      onSignup: _authUser,
+      onLogin: _signInUser,
+      onSignup: _signUpUser,
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => Home(),

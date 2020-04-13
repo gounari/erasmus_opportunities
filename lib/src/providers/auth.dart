@@ -1,3 +1,4 @@
+import 'package:erasmusopportunities/src/models/signup_data.dart';
 import 'package:flutter/material.dart';
 
 import '../models/login_data.dart';
@@ -5,7 +6,10 @@ import '../models/login_data.dart';
 enum AuthMode { Signup, Login }
 
 /// The result is an error message, callback successes if message is null
-typedef AuthCallback = Future<String> Function(LoginData);
+typedef AuthCallbackLogin = Future<String> Function(LoginData);
+
+/// The result is an error message, callback successes if message is null
+typedef AuthCallbackSignUp = Future<String> Function(SignUpData);
 
 /// The result is an error message, callback successes if message is null
 typedef RecoverCallback = Future<String> Function(String);
@@ -26,8 +30,8 @@ class Auth with ChangeNotifier {
         this._organisationName = organisationName,
         this._organisationLocation = organisationLocation;
 
-  final AuthCallback onLogin;
-  final AuthCallback onSignup;
+  final AuthCallbackLogin onLogin;
+  final AuthCallbackSignUp onSignup;
   final RecoverCallback onRecoverPassword;
 
   AuthMode _mode = AuthMode.Login;

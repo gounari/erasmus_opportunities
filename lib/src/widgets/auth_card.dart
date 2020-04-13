@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:erasmusopportunities/src/models/signup_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -480,9 +481,11 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
         password: auth.password,
       ));
     } else {
-      error = await auth.onSignup(LoginData(
+      error = await auth.onSignup(SignUpData(
         email: auth.email,
         password: auth.password,
+        organisationName: auth.organisationName,
+        organisationLocation: auth.organisationLocation,
       ));
     }
 
