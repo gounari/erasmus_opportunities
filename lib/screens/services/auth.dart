@@ -1,4 +1,5 @@
 import 'package:erasmusopportunities/models/user.dart';
+import 'package:erasmusopportunities/screens/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -41,10 +42,14 @@ class AuthService {
   }
 
   // register with email & password
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(String email, String password, String name, String location) async {
     try {
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       FirebaseUser user = result.user;
+
+      // Create a new document for the organisation with uid
+      await DatabaseService(uid: user.uid).updateUserData(name, email, location);
+
       return _userFromFirebaseUser(user);
     } catch (error) {
       print(error.toString());

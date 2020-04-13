@@ -34,7 +34,7 @@ class SignIn extends StatelessWidget {
     print('SignUp: \nEmail: ${data.email}, Password: ${data.password}, Name: ${data.organisationName}, Location: ${data.organisationLocation}');
     return Future.delayed(loginTime).then((_) async {
 
-      dynamic user = await _auth.registerWithEmailAndPassword(data.email, data.password);
+      dynamic user = await _auth.registerWithEmailAndPassword(data.email, data.password, data.organisationName, data.organisationLocation);
       if (user == null) {
         return 'Error signing up';
       }
