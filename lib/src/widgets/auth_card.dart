@@ -542,7 +542,6 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
         } else {
           // SignUp
           FocusScope.of(context).requestFocus(_organisationNameFocusNode);
-          FocusScope.of(context).requestFocus(_organisationLocationFocusNode);
         }
       },
       validator: widget.passwordValidator,
@@ -562,7 +561,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       textInputAction: TextInputAction.next,
       focusNode: _organisationNameFocusNode,
       validator: widget.plainValidator,
-      onFieldSubmitted: (value) => _submit(),
+      onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_organisationLocationFocusNode),
       onSaved: (value) => auth.organisationName = value,
     );
   }
@@ -576,7 +575,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       inertiaDirection: TextFieldInertiaDirection.right,
       labelText: messages.organisationLocationHint,
       controller: _organisationLocationController,
-      textInputAction: TextInputAction.next,
+      textInputAction: TextInputAction.done,
       focusNode: _organisationLocationFocusNode,
       validator: widget.plainValidator,
       onFieldSubmitted: (value) => _submit(),
