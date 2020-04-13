@@ -47,6 +47,9 @@ class LoginMessages with ChangeNotifier {
   /// Hint text of the organisation name [TextField]
   final String organisationNameHint;
 
+  /// Hint text of the organisation name [TextField]
+  final String organisationLocationHint;
+
   /// Hint text of the organisation location [TextField]
   final String organisationLocationHint;
 
