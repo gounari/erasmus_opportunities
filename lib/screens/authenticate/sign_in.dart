@@ -19,13 +19,13 @@ class SignIn extends StatelessWidget {
   Future<String> _signInUser(LoginData data) {
     print('Login: \nEmail: ${data.email}, Password: ${data.password}');
 
-    return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(data.email)) {
-        return 'Username not exists';
+    return Future.delayed(loginTime).then((_) async {
+
+      dynamic user = await _auth.signInWithEmailAndPassword(data.email, data.password);
+      if (user == null) {
+        return 'Error signing in';
       }
-      if (users[data.email] != data.password) {
-        return 'Password does not match';
-      }
+
       return null;
     });
   }
