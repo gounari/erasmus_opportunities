@@ -3,6 +3,7 @@ import 'package:erasmusopportunities/onboarding/providers/login_theme.dart';
 import 'package:erasmusopportunities/screens/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_progress_button/flutter_progress_button.dart';
 import 'package:intl/intl.dart';
 
 class Home extends StatefulWidget {
@@ -271,16 +272,31 @@ class _HomeState extends State<Home> {
                     ),
                     Row(
                       children: <Widget>[
-                        MaterialButton(
-                          child: Text("Submit"),
-                          onPressed: () {
+                        ProgressButton(
+                          defaultWidget:
+                          const Text('Publish', style: TextStyle(color: Colors.white)),
+                          progressWidget: const CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+                          color: Color.fromRGBO(0, 68, 148, 1),
+                          width: 100,
+                          height: 40,
+                          borderRadius: 24,
+                          animate: false,
+                          onPressed: () async {
+
                             if (_fbKey.currentState.saveAndValidate()) {
                               print(_fbKey.currentState.value['startDate']);
                             }
+
+                            int score = await Future.delayed(
+                                const Duration(milliseconds: 4000), () => 42);
                           },
                         ),
                         MaterialButton(
-                          child: Text("Reset"),
+                          child: Text(
+                            "Reset",
+                            style: TextStyle(color: Color.fromRGBO(0, 68, 148, 1),),
+                          ),
                           onPressed: () {
                             _fbKey.currentState.reset();
                           },
