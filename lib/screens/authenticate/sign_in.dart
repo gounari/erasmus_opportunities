@@ -4,7 +4,7 @@ import 'package:erasmusopportunities/src/models/signup_data.dart';
 import 'package:flutter/material.dart';
 import 'package:erasmusopportunities/flutter_login.dart';
 
-class SignIn extends StatelessWidget {
+class Onboarding extends StatelessWidget {
   Duration get loginTime => Duration(milliseconds: 2250);
 
   final AuthService _auth = AuthService();

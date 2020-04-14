@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:erasmusopportunities/models/organisation.dart';
 
 class DatabaseService {
 
@@ -14,6 +15,28 @@ class DatabaseService {
       'email' : email,
       'location' : location,
     });
+  }
+
+  Future getUserData() async {
+    Organisation user;
+    await organisationsCollection.document(uid).get()
+        .then((doc) => {
+          if (!doc.exists) {
+            print('No such document!')
+          } else {
+            print('Document data: ${doc.data}'),
+
+            user = Organisation(
+              uid: doc.documentID,
+              name: doc.data['name'],
+              email: doc.data['email'],
+              location: doc.data['location'],
+            ),
+          }
+    }).catchError((error) => {
+      print('Error getting document $error')
+    });
+    return user;
   }
 
 

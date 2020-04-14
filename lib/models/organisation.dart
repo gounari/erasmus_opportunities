@@ -1,13 +1,12 @@
 import 'package:flutter/foundation.dart';
-import 'package:quiver/core.dart';
 
-class LoginData {
+class Organisation {
   final String uid;
   final String name;
   final String email;
   final String location;
 
-  LoginData({
+  Organisation({
     @required this.uid,
     @required this.name,
     @required this.email,
@@ -19,3 +18,5 @@ class LoginData {
     return '$runtimeType($uid, $name, $email, $location)';
   }
 }
+
+
