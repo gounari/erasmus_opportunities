@@ -7,22 +7,22 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'src/providers/login_theme.dart';
-import 'src/widgets/null_widget.dart';
+import 'providers/login_theme.dart';
+import 'widgets/null_widget.dart';
 import 'theme.dart';
-import 'src/dart_helper.dart';
-import 'src/color_helper.dart';
-import 'src/providers/auth.dart';
-import 'src/providers/login_messages.dart';
-import 'src/regex.dart';
-import 'src/widgets/auth_card.dart';
-import 'src/widgets/fade_in.dart';
-import 'src/widgets/hero_text.dart';
-import 'src/widgets/gradient_box.dart';
-export 'src/models/login_data.dart';
-export 'src/providers/login_messages.dart';
-export 'src/providers/login_theme.dart';
-import 'src/constants.dart';
+import 'helpers/dart_helper.dart';
+import 'helpers/color_helper.dart';
+import 'providers/auth.dart';
+import 'providers/login_messages.dart';
+import 'helpers/regex.dart';
+import 'widgets/auth_card.dart';
+import 'widgets/fade_in.dart';
+import 'widgets/hero_text.dart';
+import 'widgets/gradient_box.dart';
+export 'models/login_data.dart';
+export 'providers/login_messages.dart';
+export 'providers/login_theme.dart';
+import 'helpers/constants.dart';
 
 class _AnimationTimeDilationDropdown extends StatelessWidget {
   _AnimationTimeDilationDropdown({

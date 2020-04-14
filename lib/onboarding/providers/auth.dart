@@ -1,4 +1,4 @@
-import 'package:erasmusopportunities/src/models/signup_data.dart';
+import 'package:erasmusopportunities/onboarding/models/signup_data.dart';
 import 'package:flutter/material.dart';
 
 import '../models/login_data.dart';

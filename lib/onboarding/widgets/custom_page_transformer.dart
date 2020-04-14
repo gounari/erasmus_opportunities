@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:transformer_page_view/transformer_page_view.dart';
 
-import '../math_helper.dart';
-import '../matrix.dart';
+import '../helpers/math_helper.dart';
+import '../helpers/matrix.dart';
 
 class CustomPageTransformer extends PageTransformer {
   @override

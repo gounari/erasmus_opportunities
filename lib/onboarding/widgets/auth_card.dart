@@ -1,24 +1,24 @@
 import 'dart:math';
 
-import 'package:erasmusopportunities/src/models/signup_data.dart';
+import 'package:erasmusopportunities/onboarding/models/signup_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:transformer_page_view/transformer_page_view.dart';
-import '../constants.dart';
+import '../helpers/constants.dart';
 import 'animated_button.dart';
 import 'animated_text.dart';
 import 'custom_page_transformer.dart';
 import 'expandable_container.dart';
-import 'fade_in.dart';
+import '../../onboarding/widgets/fade_in.dart';
 import 'animated_text_form_field.dart';
 import '../providers/auth.dart';
-import '../providers/login_messages.dart';
+import '../../onboarding/providers/login_messages.dart';
 import '../models/login_data.dart';
-import '../dart_helper.dart';
-import '../matrix.dart';
-import '../paddings.dart';
-import '../widget_helper.dart';
+import '../helpers/dart_helper.dart';
+import '../helpers/matrix.dart';
+import '../helpers/paddings.dart';
+import '../helpers/widget_helper.dart';
 
 class AuthCard extends StatefulWidget {
   AuthCard({
@@ -291,7 +291,7 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
                         : (_formLoadingController..value = 1.0),
                     emailValidator: widget.emailValidator,
                     passwordValidator: widget.passwordValidator,
-                    plainValidator: widget.plainValidator,
+                    plainValidator: widget.passwordValidator,
                     onSwitchRecoveryPassword: () => _switchRecovery(true),
                     onSubmitCompleted: () {
                       _forwardChangeRouteAnimation().then((_) {
@@ -563,7 +563,6 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       controller: _organisationNameController,
       textInputAction: TextInputAction.next,
       focusNode: _organisationNameFocusNode,
-      validator: widget.plainValidator,
       onFieldSubmitted: (value) => FocusScope.of(context).requestFocus(_organisationLocationFocusNode),
       onSaved: (value) => auth.organisationName = value,
     );
@@ -580,7 +579,6 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       controller: _organisationLocationController,
       textInputAction: TextInputAction.done,
       focusNode: _organisationLocationFocusNode,
-      validator: widget.plainValidator,
       onFieldSubmitted: (value) => _submit(),
       onSaved: (value) => auth.organisationLocation = value,
     );
