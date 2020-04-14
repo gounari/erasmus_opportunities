@@ -1,3 +1,5 @@
+import 'package:erasmusopportunities/onboarding/helpers/color_helper.dart';
+import 'package:erasmusopportunities/onboarding/providers/login_theme.dart';
 import 'package:erasmusopportunities/screens/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -12,9 +14,24 @@ class _HomeState extends State<Home> {
 
   final AuthService _auth = AuthService();
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
+  final DateTime startDate = DateTime.now();
+  static final loginTheme = LoginTheme();
+  final inputTheme = loginTheme.inputTheme;
+  final roundBorderRadius = BorderRadius.circular(100);
+
+
 
   @override
   Widget build(BuildContext context) {
+
+    final theme = Theme.of(context);
+    final originalPrimaryColor = loginTheme.primaryColor ?? theme.primaryColor;
+    final primaryDarkShades = getDarkShades(originalPrimaryColor);
+    final primaryColor = primaryDarkShades.length == 1
+        ? lighten(primaryDarkShades.first)
+        : primaryDarkShades.first;
+    final errorColor = loginTheme.errorColor ?? theme.errorColor;
+
     return Scaffold(
       backgroundColor: Colors.white70,
       appBar: AppBar(
@@ -64,6 +81,9 @@ class _HomeState extends State<Home> {
                               FormBuilderValidators.required(),
                             ],
                           ),
+
+                          SizedBox(height: 10),
+
                           FormBuilderTextField(
                             attribute: "Venue Location",
                             decoration: InputDecoration(labelText: "Venue Location"),
@@ -71,6 +91,9 @@ class _HomeState extends State<Home> {
                               FormBuilderValidators.required(),
                             ],
                           ),
+
+                          SizedBox(height: 10),
+
                           FormBuilderDropdown(
                             attribute: "Type",
                             decoration: InputDecoration(labelText: "Type"),
@@ -82,17 +105,62 @@ class _HomeState extends State<Home> {
                                 child: Text("$type")
                             )).toList(),
                           ),
+
+                          SizedBox(height: 10),
+
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
                               Expanded(
                                 child: FormBuilderDateTimePicker(
-                                  attribute: "from_date",
+                                  attribute: 'startDate',
                                   inputType: InputType.date,
-                                  format: DateFormat("yyyy-MM-dd"),
-                                  decoration:
-                                  InputDecoration(labelText: "From Date"),
-                                  validators: [FormBuilderValidators.required(),],
+                                  firstDate: startDate,
+                                  lastDate: DateTime(
+                                      startDate.year + 1, startDate.month, startDate.day),
+                                  format: DateFormat('dd-MM-yyyy'),
+
+                                  decoration: InputDecoration(
+                                    labelText: 'Start Date',
+                                    filled: inputTheme.filled,
+                                    fillColor: inputTheme.fillColor ??
+                                        Color.alphaBlend(
+                                          primaryColor.withOpacity(.07),
+                                          Colors.grey.withOpacity(.04),
+                                        ),
+                                    contentPadding: inputTheme.contentPadding ??
+                                        const EdgeInsets.symmetric(horizontal: 20.0),
+                                    errorStyle: inputTheme.errorStyle ?? TextStyle(color: errorColor),
+                                    labelStyle: inputTheme.labelStyle,
+                                    enabledBorder: inputTheme.enabledBorder ??
+                                        inputTheme.border ??
+                                        OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.transparent),
+                                          borderRadius: roundBorderRadius,
+                                        ),
+                                    focusedBorder: inputTheme.focusedBorder ??
+                                        inputTheme.border ??
+                                        OutlineInputBorder(
+                                          borderSide: BorderSide(color: primaryColor, width: 1.5),
+                                          borderRadius: roundBorderRadius,
+                                        ),
+                                    errorBorder: inputTheme.errorBorder ??
+                                        inputTheme.border ??
+                                        OutlineInputBorder(
+                                          borderSide: BorderSide(color: errorColor),
+                                          borderRadius: roundBorderRadius,
+                                        ),
+                                    focusedErrorBorder: inputTheme.focusedErrorBorder ??
+                                        inputTheme.border ??
+                                        OutlineInputBorder(
+                                          borderSide: BorderSide(color: errorColor, width: 1.5),
+                                          borderRadius: roundBorderRadius,
+                                        ),
+                                    disabledBorder: inputTheme.disabledBorder ?? inputTheme.border,
+                                  ),
+                                  validators: [
+                                    FormBuilderValidators.required()
+                                  ],
                                 ),
                               ),
                               SizedBox(width: 20.0,),
@@ -108,6 +176,9 @@ class _HomeState extends State<Home> {
                               ),
                             ]
                           ),
+
+                          SizedBox(height: 10),
+
                           Row(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
@@ -136,6 +207,9 @@ class _HomeState extends State<Home> {
                                 ),
                               ]
                           ),
+
+                          SizedBox(height: 10),
+
                           FormBuilderDropdown(
                             attribute: "Topic",
                             decoration: InputDecoration(labelText: "Topic"),
@@ -156,6 +230,9 @@ class _HomeState extends State<Home> {
                                 child: Text("$topic")
                             )).toList(),
                           ),
+
+                          SizedBox(height: 10),
+
                           FormBuilderDateTimePicker(
                             attribute: "deadline",
                             inputType: InputType.date,
@@ -164,6 +241,9 @@ class _HomeState extends State<Home> {
                             InputDecoration(labelText: "Application Deadline"),
                             validators: [FormBuilderValidators.required()],
                           ),
+
+                          SizedBox(height: 10),
+
                           FormBuilderTextField(
                             attribute: "participation_cost",
                             decoration: InputDecoration(labelText: "Participation cost"),
@@ -172,6 +252,9 @@ class _HomeState extends State<Home> {
                               FormBuilderValidators.required(),
                             ],
                           ),
+
+                          SizedBox(height: 10),
+
                           FormBuilderTextField(
                             attribute: "reimbursement_limit",
                             decoration: InputDecoration(labelText: "Reimbursement limit for travel costs"),
@@ -180,6 +263,9 @@ class _HomeState extends State<Home> {
                               FormBuilderValidators.required(),
                             ],
                           ),
+
+                          SizedBox(height: 10),
+
                           FormBuilderTextField(
                             attribute: "application_link",
                             decoration: InputDecoration(labelText: "Application Link"),
@@ -188,6 +274,9 @@ class _HomeState extends State<Home> {
                               FormBuilderValidators.required(),
                             ],
                           ),
+
+                          SizedBox(height: 10),
+
                           FormBuilderCheckboxList(
                             decoration:
                             InputDecoration(labelText: "You can provide"),
@@ -199,6 +288,9 @@ class _HomeState extends State<Home> {
                               FormBuilderFieldOption(value: "Other types of additional support for young people."),
                             ],
                           ),
+
+                          SizedBox(height: 10),
+
                           FormBuilderTextField(
                             attribute: "Description",
                             decoration: InputDecoration(labelText: "Description"),
@@ -206,6 +298,8 @@ class _HomeState extends State<Home> {
                               FormBuilderValidators.required(),
                             ],
                           ),
+
+                          SizedBox(height: 10),
                         ],
                       ),
                     ),
@@ -236,4 +330,25 @@ class _HomeState extends State<Home> {
       ),
     );
   }
+}
+
+/// get the dark shades version of current color,
+List<Color> getDarkShades(Color color,
+    [ColorShade minShade = ColorShade.fifthLightest]) {
+  final materialColor =
+  color is MaterialColor ? color : getMaterialColor(color);
+  final darkShades = <Color>[];
+
+  for (final shade in shades.values) {
+    if (shade < shades[minShade]) continue;
+
+    final colorShade = materialColor[shade];
+    if (estimateBrightnessForColor(colorShade) == Brightness.dark) {
+      darkShades.add(colorShade);
+    }
+  }
+
+  return darkShades.length > 0
+      ? darkShades
+      : [materialColor[shades[ColorShade.darkest]]];
 }
