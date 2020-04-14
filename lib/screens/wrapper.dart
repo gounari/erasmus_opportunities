@@ -11,7 +11,7 @@ class Wrapper extends StatelessWidget {
     final user = Provider.of<FirebaseUser>(context);
 
     if (user == null) {
-      return Authenticate();
+      return Home();
     } else {
       return Home();
     }
