@@ -13,19 +13,37 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.white70,
       appBar: AppBar(
-        title: Text('Home'),
-        backgroundColor: Colors.blue[900],
+        title: Image.asset('images/logo.png', fit: BoxFit.contain, height: 50),
+        backgroundColor: Colors.white70,
         elevation: 0.0,
         actions: <Widget>[
           FlatButton.icon(
               onPressed: () async {
                 await _auth.signOut();
               },
-              icon: Icon(Icons.person),
-              label: Text('Logout'))
+              icon: Icon(
+                Icons.exit_to_app,
+                color: Color.fromRGBO(0, 68, 148, 1),
+              ),
+              label: Text(''),
+          ),
         ],
+      ),
+      body: Container(
+        child: Card(
+          color: Colors.white,
+          elevation: 10.0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          child: Row(
+            children: <Widget>[
+              Text('Hello'),
+            ],
+          ),
+        ),
       ),
     );
   }
