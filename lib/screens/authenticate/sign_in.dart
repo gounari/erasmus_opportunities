@@ -47,7 +47,7 @@ class Onboarding extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlutterLogin(
       title: '',
-      logo: 'assets/images/logo.png',
+      logo: 'assets/images/logo_white.png',
       onLogin: _signInUser,
       onSignup: _signUpUser,
       onSubmitAnimationCompleted: () {
