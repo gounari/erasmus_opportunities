@@ -27,8 +27,6 @@ class DatabaseService {
           if (!doc.exists) {
             print('No such document!')
           } else {
-            print('Document data: ${doc.data}'),
-
             user = Organisation(
               uid: doc.documentID,
               name: doc.data['name'],

@@ -276,47 +276,62 @@ class _HomeState extends State<Home> {
                     ),
                     Row(
                       children: <Widget>[
-                        ProgressButton(
-                          defaultWidget:
-                          const Text('Publish', style: TextStyle(color: Colors.white)),
-                          progressWidget: const CircularProgressIndicator(
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
-                          color: Color.fromRGBO(0, 68, 148, 1),
-                          width: 100,
-                          height: 40,
-                          borderRadius: 24,
-                          animate: false,
-                          onPressed: () async {
+                        Builder(
+                          builder: (BuildContext context) {
+                            return ProgressButton(
+                              defaultWidget:
+                              const Text('Publish', style: TextStyle(color: Colors.white)),
+                              progressWidget: const CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+                              color: Color.fromRGBO(0, 68, 148, 1),
+                              width: 100,
+                              height: 40,
+                              borderRadius: 24,
+                              animate: false,
+                              onPressed: () async {
 
-                            try {
-                              if (_fbKey.currentState.saveAndValidate()) {
-                                FormBuilderState currentState = _fbKey.currentState;
+                                try {
+                                  if (_fbKey.currentState.saveAndValidate()) {
+                                    FormBuilderState currentState = _fbKey.currentState;
 
-                                final FirebaseUser user = await _auth.currentUser();
-                                await DatabaseService(uid: user.uid)
-                                    .updateOpportunity(
-                                    currentState.value[opportunity.title],
-                                    currentState.value[opportunity.venueLocation],
-                                    currentState.value[opportunity.type],
-                                    currentState.value[opportunity.startDate],
-                                    currentState.value[opportunity.endDate],
-                                    currentState.value[opportunity.lowAge],
-                                    currentState.value[opportunity.highAge],
-                                    currentState.value[opportunity.topic],
-                                    currentState.value[opportunity.applicationDeadline],
-                                    currentState.value[opportunity.participationCost],
-                                    currentState.value[opportunity.reimbursementLimit],
-                                    currentState.value[opportunity.applicationLink],
-                                    currentState.value[opportunity.provideForDisabilities],
-                                    currentState.value[opportunity.description],
-                                );
-                              }
+                                    final FirebaseUser user = await _auth.currentUser();
+                                    await DatabaseService(uid: user.uid)
+                                        .updateOpportunity(
+                                      currentState.value[opportunity.title],
+                                      currentState.value[opportunity.venueLocation],
+                                      currentState.value[opportunity.type],
+                                      currentState.value[opportunity.startDate],
+                                      currentState.value[opportunity.endDate],
+                                      currentState.value[opportunity.lowAge],
+                                      currentState.value[opportunity.highAge],
+                                      currentState.value[opportunity.topic],
+                                      currentState.value[opportunity.applicationDeadline],
+                                      currentState.value[opportunity.participationCost],
+                                      currentState.value[opportunity.reimbursementLimit],
+                                      currentState.value[opportunity.applicationLink],
+                                      currentState.value[opportunity.provideForDisabilities],
+                                      currentState.value[opportunity.description],
+                                    );
 
-                            } catch (error) {
-                              print(error.toString());
-                              return null;
-                            }
+                                    currentState.reset();
+                                    final snackBar = SnackBar(
+                                      content: Text('Opportunity succesfully published!'),
+                                      backgroundColor: Colors.green,
+                                    );
+                                    Scaffold.of(context).showSnackBar(snackBar);
+                                  }
 
+                                } catch (error) {
+                                  print(error.toString());
+                                  final snackBar = SnackBar(
+                                    content: Text('An error accured! Please try again.'),
+                                    backgroundColor: Colors.red,
+                                  );
+                                  Scaffold.of(context).showSnackBar(snackBar);
+                                  return null;
+                                }
+                              },
+                            );
                           },
                         ),
                         MaterialButton(
