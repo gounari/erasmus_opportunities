@@ -1,14 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:erasmusopportunities/helpers/firebase_constants.dart';
 import 'package:erasmusopportunities/models/organisation.dart';
 
 class DatabaseService {
 
   final String uid;
   DatabaseService({ this.uid });
+  static final opportunity = FirebaseOpportunityConstants();
 
   // Collection references
   final CollectionReference organisationsCollection = Firestore.instance.collection('organisations');
-  final CollectionReference opportunitiesCollection = Firestore.instance.collection('opportunities');
+  final CollectionReference opportunitiesCollection = Firestore.instance.collection(opportunity.collection);
 
   Future updateUserData(String name, String email, String location) async {
     return await organisationsCollection.document(uid).setData({
@@ -44,27 +46,38 @@ class DatabaseService {
       String title,
       String venueLocation,
       String type,
-//      DateTime startDate,
-//      DateTime endDate,
-//      int lowAge,
-//      int highAge,
-//      String topic,
-//      DateTime applicationDeadline,
-//      double participationCost,
-//      double reimbursementLimit,
-//      String applicationLink,
-//      String difficulties,
-//      String description
+      DateTime startDate,
+      DateTime endDate,
+      String lowAge,
+      String highAge,
+      String topic,
+      DateTime applicationDeadline,
+      String participationCost,
+      String reimbursementLimit,
+      String applicationLink,
+      List provideForDisabilities,
+      String description
       )
   async {
-    print('in updateOpportunity');
     Organisation organisation = await getUserData();
     return await opportunitiesCollection.document().setData({
-      'title' : title,
-      'venueLocation' : venueLocation,
-      'type' : type,
+      opportunity.title : title,
+      opportunity.organisationName : organisation.name,
+      opportunity.organisationUID : organisation.uid,
+      opportunity.venueLocation : venueLocation,
+      opportunity.type : type,
+      opportunity.startDate : startDate,
+      opportunity.endDate : endDate,
+      opportunity.lowAge : int.parse(lowAge),
+      opportunity.highAge : int.parse(highAge),
+      opportunity.topic : topic,
+      opportunity.applicationDeadline : applicationDeadline,
+      opportunity.participationCost : double.parse(participationCost),
+      opportunity.reimbursementLimit : double.parse(reimbursementLimit),
+      opportunity.applicationLink : applicationLink,
+      opportunity.provideForDisabilities : provideForDisabilities,
+      opportunity.description : description,
     });
   }
-
 
 }

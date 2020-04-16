@@ -1,3 +1,4 @@
+import 'package:erasmusopportunities/helpers/firebase_constants.dart';
 import 'package:erasmusopportunities/onboarding/helpers/color_helper.dart';
 import 'package:erasmusopportunities/onboarding/providers/login_theme.dart';
 import 'package:erasmusopportunities/screens/services/auth.dart';
@@ -23,6 +24,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
 
     final loginTheme = LoginTheme();
+    final opportunity = FirebaseOpportunityConstants();
     final theme = _mergeTheme(theme: Theme.of(context), loginTheme: loginTheme);
 
     return Scaffold(
@@ -72,7 +74,7 @@ class _HomeState extends State<Home> {
                             child: Column(
                               children: <Widget>[
                                 FormBuilderTextField(
-                                  attribute: "title",
+                                  attribute: opportunity.title,
                                   decoration: InputDecoration(labelText: "Title"),
                                   validators: [
                                     FormBuilderValidators.required(),
@@ -82,7 +84,7 @@ class _HomeState extends State<Home> {
                                 SizedBox(height: 20),
 
                                 FormBuilderTextField(
-                                  attribute: "venueLocation",
+                                  attribute: opportunity.venueLocation,
                                   decoration: InputDecoration(labelText: "Venue Location"),
                                   validators: [
                                     FormBuilderValidators.required(),
@@ -92,7 +94,7 @@ class _HomeState extends State<Home> {
                                 SizedBox(height: 20),
 
                                 FormBuilderDropdown(
-                                  attribute: "type",
+                                  attribute: opportunity.type,
                                   hint: Text('Select Type'),
                                   validators: [FormBuilderValidators.required()],
                                   items: ['Youth Exchange', 'Training Course']
@@ -109,7 +111,7 @@ class _HomeState extends State<Home> {
                                   children: <Widget>[
                                     Expanded(
                                       child: FormBuilderDateTimePicker(
-                                        attribute: 'startDate',
+                                        attribute: opportunity.startDate,
                                         inputType: InputType.date,
                                         firstDate: startDate,
                                         lastDate: DateTime(
@@ -124,7 +126,7 @@ class _HomeState extends State<Home> {
                                     SizedBox(width: 20.0,),
                                     Expanded(
                                       child: FormBuilderDateTimePicker(
-                                        attribute: "endDate",
+                                        attribute: opportunity.endDate,
                                         inputType: InputType.date,
                                         format: DateFormat("dd-MM-yyyy"),
                                         decoration:
@@ -142,7 +144,7 @@ class _HomeState extends State<Home> {
                                     children: <Widget>[
                                       Expanded(
                                         child: FormBuilderTextField(
-                                          attribute: "from_age",
+                                          attribute: opportunity.lowAge,
                                           decoration: InputDecoration(labelText: "From age"),
                                           validators: [
                                             FormBuilderValidators.numeric(),
@@ -154,7 +156,7 @@ class _HomeState extends State<Home> {
                                       SizedBox(width: 20.0,),
                                       Expanded(
                                         child: FormBuilderTextField(
-                                          attribute: "to_age",
+                                          attribute: opportunity.highAge,
                                           decoration: InputDecoration(labelText: "To age"),
                                           validators: [
                                             FormBuilderValidators.numeric(),
@@ -169,7 +171,7 @@ class _HomeState extends State<Home> {
                                 SizedBox(height: 20),
 
                                 FormBuilderDropdown(
-                                  attribute: "Topic",
+                                  attribute: opportunity.topic,
                                   hint: Text('Select Topic'),
                                   validators: [FormBuilderValidators.required()],
                                   items: ['Social Challenges',
@@ -191,7 +193,7 @@ class _HomeState extends State<Home> {
                                 SizedBox(height: 20),
 
                                 FormBuilderDateTimePicker(
-                                  attribute: "deadline",
+                                  attribute: opportunity.applicationDeadline,
                                   inputType: InputType.date,
                                   format: DateFormat("yyyy-MM-dd"),
                                   decoration:
@@ -202,7 +204,7 @@ class _HomeState extends State<Home> {
                                 SizedBox(height: 20),
 
                                 FormBuilderTextField(
-                                  attribute: "participation_cost",
+                                  attribute: opportunity.participationCost,
                                   decoration: InputDecoration(labelText: "Participation cost"),
                                   validators: [
                                     FormBuilderValidators.numeric(),
@@ -213,7 +215,7 @@ class _HomeState extends State<Home> {
                                 SizedBox(height: 20),
 
                                 FormBuilderTextField(
-                                  attribute: "reimbursement_limit",
+                                  attribute: opportunity.reimbursementLimit,
                                   decoration: InputDecoration(labelText: "Reimbursement limit for travel costs"),
                                   validators: [
                                     FormBuilderValidators.numeric(),
@@ -224,7 +226,7 @@ class _HomeState extends State<Home> {
                                 SizedBox(height: 20),
 
                                 FormBuilderTextField(
-                                  attribute: "application_link",
+                                  attribute: opportunity.applicationLink,
                                   decoration: InputDecoration(labelText: "Application Link"),
                                   validators: [
                                     FormBuilderValidators.url(),
@@ -246,7 +248,7 @@ class _HomeState extends State<Home> {
                               border: OutlineInputBorder(),
                               labelText: 'You can provide:',
                             ),
-                            attribute: "disabilities",
+                            attribute: opportunity.provideForDisabilities,
                             options: [
                               FormBuilderFieldOption(value: "Additional mentoring or other support suitable for young people with obstacles, educational difficulties, cultural differences or similar."),
                               FormBuilderFieldOption(value: "A physical environment suitable for young people with physical, sensory or other disabilities (such as wheelchair access and similar)."),
@@ -260,7 +262,7 @@ class _HomeState extends State<Home> {
                           Theme(
                             data: theme,
                             child: FormBuilderTextField(
-                              attribute: "Description",
+                              attribute: opportunity.description,
                               decoration: InputDecoration(labelText: "Description"),
                               validators: [
                                 FormBuilderValidators.required(),
@@ -286,22 +288,29 @@ class _HomeState extends State<Home> {
                           animate: false,
                           onPressed: () async {
 
-                            if (_fbKey.currentState.saveAndValidate()) {
-                              print(_fbKey.currentState.value['startDate']);
-                            }
-
-
                             try {
-                              FormBuilderState currentState = _fbKey.currentState;
+                              if (_fbKey.currentState.saveAndValidate()) {
+                                FormBuilderState currentState = _fbKey.currentState;
 
-                              final FirebaseUser user = await _auth.currentUser();
-                              print(user);
-
-                              await DatabaseService(uid: user.uid)
-                                  .updateOpportunity(
-                                  currentState.value['title'],
-                                  currentState.value['venueLocation'],
-                                  currentState.value['type']);
+                                final FirebaseUser user = await _auth.currentUser();
+                                await DatabaseService(uid: user.uid)
+                                    .updateOpportunity(
+                                    currentState.value[opportunity.title],
+                                    currentState.value[opportunity.venueLocation],
+                                    currentState.value[opportunity.type],
+                                    currentState.value[opportunity.startDate],
+                                    currentState.value[opportunity.endDate],
+                                    currentState.value[opportunity.lowAge],
+                                    currentState.value[opportunity.highAge],
+                                    currentState.value[opportunity.topic],
+                                    currentState.value[opportunity.applicationDeadline],
+                                    currentState.value[opportunity.participationCost],
+                                    currentState.value[opportunity.reimbursementLimit],
+                                    currentState.value[opportunity.applicationLink],
+                                    currentState.value[opportunity.provideForDisabilities],
+                                    currentState.value[opportunity.description],
+                                );
+                              }
 
                             } catch (error) {
                               print(error.toString());
