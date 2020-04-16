@@ -6,8 +6,9 @@ class DatabaseService {
   final String uid;
   DatabaseService({ this.uid });
 
-  // Collection reference
+  // Collection references
   final CollectionReference organisationsCollection = Firestore.instance.collection('organisations');
+  final CollectionReference opportunitiesCollection = Firestore.instance.collection('opportunities');
 
   Future updateUserData(String name, String email, String location) async {
     return await organisationsCollection.document(uid).setData({
@@ -37,6 +38,32 @@ class DatabaseService {
       print('Error getting document $error')
     });
     return user;
+  }
+
+  Future updateOpportunity(
+      String title,
+      String venueLocation,
+      String type,
+//      DateTime startDate,
+//      DateTime endDate,
+//      int lowAge,
+//      int highAge,
+//      String topic,
+//      DateTime applicationDeadline,
+//      double participationCost,
+//      double reimbursementLimit,
+//      String applicationLink,
+//      String difficulties,
+//      String description
+      )
+  async {
+    print('in updateOpportunity');
+    Organisation organisation = await getUserData();
+    return await opportunitiesCollection.document().setData({
+      'title' : title,
+      'venueLocation' : venueLocation,
+      'type' : type,
+    });
   }
 
 

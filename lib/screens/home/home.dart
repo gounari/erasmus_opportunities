@@ -1,6 +1,8 @@
 import 'package:erasmusopportunities/onboarding/helpers/color_helper.dart';
 import 'package:erasmusopportunities/onboarding/providers/login_theme.dart';
 import 'package:erasmusopportunities/screens/services/auth.dart';
+import 'package:erasmusopportunities/screens/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_progress_button/flutter_progress_button.dart';
@@ -70,7 +72,7 @@ class _HomeState extends State<Home> {
                             child: Column(
                               children: <Widget>[
                                 FormBuilderTextField(
-                                  attribute: "Title",
+                                  attribute: "title",
                                   decoration: InputDecoration(labelText: "Title"),
                                   validators: [
                                     FormBuilderValidators.required(),
@@ -80,7 +82,7 @@ class _HomeState extends State<Home> {
                                 SizedBox(height: 20),
 
                                 FormBuilderTextField(
-                                  attribute: "Venue Location",
+                                  attribute: "venueLocation",
                                   decoration: InputDecoration(labelText: "Venue Location"),
                                   validators: [
                                     FormBuilderValidators.required(),
@@ -90,7 +92,7 @@ class _HomeState extends State<Home> {
                                 SizedBox(height: 20),
 
                                 FormBuilderDropdown(
-                                  attribute: "Type",
+                                  attribute: "type",
                                   hint: Text('Select Type'),
                                   validators: [FormBuilderValidators.required()],
                                   items: ['Youth Exchange', 'Training Course']
@@ -288,8 +290,24 @@ class _HomeState extends State<Home> {
                               print(_fbKey.currentState.value['startDate']);
                             }
 
-                            int score = await Future.delayed(
-                                const Duration(milliseconds: 4000), () => 42);
+
+                            try {
+                              FormBuilderState currentState = _fbKey.currentState;
+
+                              final FirebaseUser user = await _auth.currentUser();
+                              print(user);
+
+                              await DatabaseService(uid: user.uid)
+                                  .updateOpportunity(
+                                  currentState.value['title'],
+                                  currentState.value['venueLocation'],
+                                  currentState.value['type']);
+
+                            } catch (error) {
+                              print(error.toString());
+                              return null;
+                            }
+
                           },
                         ),
                         MaterialButton(

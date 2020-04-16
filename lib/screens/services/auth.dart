@@ -65,4 +65,8 @@ class AuthService {
       return null;
     }
   }
+
+  Future<FirebaseUser> currentUser() async {
+    return await _auth.currentUser();
+  }
 }
