@@ -363,7 +363,7 @@ List<Color> getDarkShades(Color color,
 }
 
 ThemeData _mergeTheme({ThemeData theme, LoginTheme loginTheme}) {
-  final originalPrimaryColor = loginTheme.primaryColor ?? theme.primaryColor;
+  final originalPrimaryColor = Color.fromRGBO(0, 68, 148, 1);;
   final primaryDarkShades = getDarkShades(originalPrimaryColor);
   final primaryColor = primaryDarkShades.length == 1
       ? lighten(primaryDarkShades.first)
@@ -371,7 +371,7 @@ ThemeData _mergeTheme({ThemeData theme, LoginTheme loginTheme}) {
   final primaryColorDark = primaryDarkShades.length >= 3
       ? primaryDarkShades[2]
       : primaryDarkShades.last;
-  final accentColor = loginTheme.accentColor ?? theme.accentColor;
+  final accentColor = Color.fromRGBO(0, 68, 148, 1);;
   final errorColor = loginTheme.errorColor ?? theme.errorColor;
   // the background is a dark gradient, force to use white text if detect default black text color
   final isDefaultBlackText = theme.textTheme.display2.color ==
