@@ -1,3 +1,4 @@
+import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:erasmusopportunities/helpers/countries.dart';
 import 'package:erasmusopportunities/helpers/firebase_constants.dart';
@@ -11,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_progress_button/flutter_progress_button.dart';
 import 'package:intl/intl.dart';
+import 'package:image_picker_web/image_picker_web.dart';
+
 
 class Home extends StatefulWidget {
   @override
@@ -19,10 +22,72 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
+  Image pickedCoverImage;
+  pickCoverImage() async {
+    /// You can set the parameter asUint8List to true
+    /// to get only the bytes from the image
+    /* Uint8List bytesFromPicker =
+        await ImagePickerWeb.getImage(outputType: ImageType.bytes);
+
+    if (bytesFromPicker != null) {
+      debugPrint(bytesFromPicker.toString());
+    } */
+
+    /// Default behavior would be getting the Image.memory
+    Image fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.widget);
+
+    if (fromPicker != null) {
+      setState(() {
+        pickedCoverImage = fromPicker;
+      });
+    }
+  }
+
+  Image pickedPostImage;
+  pickPostImage() async {
+    /// You can set the parameter asUint8List to true
+    /// to get only the bytes from the image
+    /* Uint8List bytesFromPicker =
+        await ImagePickerWeb.getImage(outputType: ImageType.bytes);
+
+    if (bytesFromPicker != null) {
+      debugPrint(bytesFromPicker.toString());
+    } */
+
+    /// Default behavior would be getting the Image.memory
+    Image fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.widget);
+
+    if (fromPicker != null) {
+      setState(() {
+        pickedPostImage = fromPicker;
+      });
+    }
+  }
+
+  String videoSRC;
+  pickVideo() async {
+    final videoMetaData = await ImagePickerWeb.getVideo(outputType: VideoType.bytes);
+
+    debugPrint('---Picked Video Bytes---');
+    debugPrint(videoMetaData.toString());
+
+    /// >>> Upload your video in Bytes now to any backend <<<
+    /// >>> Disclaimer: local files are not working till now! [February 2020] <<<
+
+    if (videoMetaData != null) {
+      setState(() {
+        videoSRC = 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4';
+      });
+    }
+  }
+
+
   final AuthService _auth = AuthService();
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   final DateTime startDate = DateTime.now();
-
+  var _addCoverImageComplete = false;
+  var _addPostImageComplete = false;
+  var _addVideoComplete = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +97,8 @@ class _HomeState extends State<Home> {
     final theme = _mergeTheme(theme: Theme.of(context), loginTheme: loginTheme);
     var _participatingCountriesLabel = '';
     List<String> participatingCountries = [];
+
+
 
     return Scaffold(
       backgroundColor: Color.fromRGBO(0, 68, 148, 1),
@@ -334,6 +401,154 @@ class _HomeState extends State<Home> {
                           ),
 
                           SizedBox(height: 20),
+
+                          Row(
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () async {
+                                  await pickCoverImage();
+                                  setState(() {
+                                    _addCoverImageComplete = true;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Text(
+                                    _addCoverImageComplete? 'Change cover image' : 'Add cover image',
+                                    style: TextStyle(color: Colors.black),
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 20.0,),
+                              AnimatedSwitcher(
+                                duration: Duration(milliseconds: 300),
+                                switchInCurve: Curves.easeIn,
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: pickedCoverImage,
+                                ) ??
+                                    Container(),
+                              ),
+                              SizedBox(width: 10.0,),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _addCoverImageComplete = false;
+                                    pickedCoverImage = null;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Icon(
+                                    Icons.cancel,
+                                    size: 20.0,
+                                    color: _addCoverImageComplete? Colors.black : Colors.transparent,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 10.0,),
+
+                          Row(
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () async {
+                                  await pickPostImage();
+                                  setState(() {
+                                    _addPostImageComplete = true;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Text(
+                                    _addPostImageComplete? 'Change post image' : 'Add post image',
+                                    style: TextStyle(color: Colors.black),
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 20.0,),
+                              AnimatedSwitcher(
+                                duration: Duration(milliseconds: 300),
+                                switchInCurve: Curves.easeIn,
+                                child: SizedBox(
+                                  width: 50,
+                                  height: 50,
+                                  child: pickedPostImage,
+                                ) ??
+                                    Container(),
+                              ),
+                              SizedBox(width: 10.0,),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _addPostImageComplete = false;
+                                    pickedPostImage = null;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Icon(
+                                    Icons.cancel,
+                                    size: 20.0,
+                                    color: _addPostImageComplete? Colors.black : Colors.transparent,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 10.0,),
+
+                          Row(
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () async {
+                                  await pickVideo();
+                                  setState(() {
+                                    _addVideoComplete = true;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Text(
+                                    _addVideoComplete? "Change video" : "Add video",
+                                    style: TextStyle(color: Colors.black),
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10.0,),
+                              Icon(
+                                Icons.check,
+                                color: _addVideoComplete? Colors.green : Colors.transparent,
+                              ),
+                              SizedBox(width: 10.0,),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _addVideoComplete = false;
+                                    videoSRC = '';
+                                  });
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Icon(
+                                    Icons.cancel,
+                                    size: 20.0,
+                                    color: _addVideoComplete? Colors.black : Colors.transparent,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 20),
+
                         ],
                       ),
                     ),
