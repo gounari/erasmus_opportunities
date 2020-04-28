@@ -56,7 +56,8 @@ class DatabaseService {
       String reimbursementLimit,
       String applicationLink,
       List provideForDisabilities,
-      String description
+      String description,
+      Timestamp timestamp,
       )
   async {
     Organisation organisation = await getUserData();
@@ -79,6 +80,7 @@ class DatabaseService {
       opportunity.applicationLink : applicationLink,
       opportunity.provideForDisabilities : provideForDisabilities,
       opportunity.description : description,
+      opportunity.timestamp : timestamp,
     });
   }
 

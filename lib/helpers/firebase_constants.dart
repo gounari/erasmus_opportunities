@@ -20,6 +20,7 @@ class FirebaseOpportunityConstants {
     this.applicationLink: opportunityApplicationLink,
     this.provideForDisabilities: opportunityProvideForDisabilities,
     this.description: opportunityDescription,
+    this.timestamp: opportunityTimestamp,
   });
 
   static const opportunitiesCollection = 'opportunities';
@@ -41,6 +42,7 @@ class FirebaseOpportunityConstants {
   static const opportunityApplicationLink = 'applicationLink';
   static const opportunityProvideForDisabilities = 'provideForDisabilities';
   static const opportunityDescription = 'description';
+  static const opportunityTimestamp = 'timestamp';
 
   final String collection;
   final String title;
@@ -61,4 +63,5 @@ class FirebaseOpportunityConstants {
   final String applicationLink;
   final String provideForDisabilities;
   final String description;
+  final String timestamp;
 }

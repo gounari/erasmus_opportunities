@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:erasmusopportunities/helpers/countries.dart';
 import 'package:erasmusopportunities/helpers/firebase_constants.dart';
 import 'package:erasmusopportunities/onboarding/helpers/color_helper.dart';
@@ -375,6 +376,7 @@ class _HomeState extends State<Home> {
                                       currentState.value[opportunity.applicationLink],
                                       currentState.value[opportunity.provideForDisabilities],
                                       currentState.value[opportunity.description],
+                                      Timestamp.now(),
                                     );
 
                                     currentState.reset();
