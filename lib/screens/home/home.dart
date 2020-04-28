@@ -1,4 +1,7 @@
+
+
 import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:erasmusopportunities/helpers/countries.dart';
 import 'package:erasmusopportunities/helpers/firebase_constants.dart';
@@ -43,7 +46,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Image pickedPostImage;
+  File pickedPostImage;
   pickPostImage() async {
     /// You can set the parameter asUint8List to true
     /// to get only the bytes from the image
@@ -55,11 +58,12 @@ class _HomeState extends State<Home> {
     } */
 
     /// Default behavior would be getting the Image.memory
-    Image fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.widget);
+    File fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.file);
 
     if (fromPicker != null) {
       setState(() {
         pickedPostImage = fromPicker;
+        print(pickedPostImage);
       });
     }
   }
@@ -478,7 +482,7 @@ class _HomeState extends State<Home> {
                                 child: SizedBox(
                                   width: 50,
                                   height: 50,
-                                  child: pickedPostImage,
+                                  child: pickedPostImage != null ? Text(pickedPostImage.name) : Text(''),
                                 ) ??
                                     Container(),
                               ),
