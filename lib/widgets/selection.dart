@@ -67,8 +67,6 @@ class _SelectionModalState extends State<SelectionModal> {
 
   Widget _buildAppBar(BuildContext context) {
     return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      height: 57.0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -114,12 +112,12 @@ class _SelectionModalState extends State<SelectionModal> {
     return SafeArea(
       child: Column(
         children: <Widget>[
-          _buildAppBar(context),
           widget.filterable ? _buildSearchText() : new SizedBox(),
           Expanded(
             child: _optionsList(),
           ),
           _currentlySelectedOptions(),
+          _buildAppBar(context),
         ],
       ),
     );
@@ -210,8 +208,6 @@ class _SelectionModalState extends State<SelectionModal> {
 
   Widget _buildSearchText() {
     return Container(
-      color: Theme.of(context).scaffoldBackgroundColor,
-      padding: EdgeInsets.only(left: 8.0, right: 8.0, bottom: 10.0, top: 10.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -221,7 +217,6 @@ class _SelectionModalState extends State<SelectionModal> {
               keyboardAppearance: Brightness.dark,
               onChanged: searchOperation,
               decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(12.0),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(30.0),
@@ -231,7 +226,7 @@ class _SelectionModalState extends State<SelectionModal> {
                   hintText: "Search...",
                   fillColor: Colors.white,
                   suffix: SizedBox(
-                      height: 25.0,
+                      height: 15.0,
                       child: IconButton(
                         icon: Icon(Icons.clear),
                         onPressed: () {
@@ -253,7 +248,7 @@ class _SelectionModalState extends State<SelectionModal> {
     return AlertDialog(
       title: Center(child: Text('Select country')),
       content: Container(
-        height: MediaQuery.of(context).size.height * 0.4,
+        height: MediaQuery.of(context).size.height * 0.8,
         width: MediaQuery.of(context).size.width * 0.4,
         key: globalKey,
         child: _buildBody(context),
