@@ -1,8 +1,10 @@
+import 'package:erasmusopportunities/helpers/countries.dart';
 import 'package:erasmusopportunities/helpers/firebase_constants.dart';
 import 'package:erasmusopportunities/onboarding/helpers/color_helper.dart';
 import 'package:erasmusopportunities/onboarding/providers/login_theme.dart';
 import 'package:erasmusopportunities/screens/services/auth.dart';
 import 'package:erasmusopportunities/screens/services/database.dart';
+import 'package:erasmusopportunities/widgets/multiselect.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -93,12 +95,30 @@ class _HomeState extends State<Home> {
 
                                 SizedBox(height: 20),
 
-                                FormBuilderTextField(
+                                FormBuilderCustomField(
                                   attribute: opportunity.venueCountry,
-                                  decoration: InputDecoration(labelText: "Venue Country"),
-                                  validators: [
-                                    FormBuilderValidators.required(),
-                                  ],
+                                  formField: FormField(
+                                    enabled: true,
+                                    builder: (FormFieldState<dynamic> field) {
+                                      return InputDecorator(
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          errorText: field.errorText,
+                                          labelText: "Venue Country",
+                                        ),
+                                        child: Container(
+                                          child: MultiSelect(
+                                              autovalidate: false,
+                                              dataSource: countries,
+                                              textField: 'name',
+                                              valueField: 'name',
+                                              filterable: true,
+                                              required: false,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
 
                                 SizedBox(height: 20),
