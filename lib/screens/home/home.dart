@@ -1,6 +1,5 @@
 
-
-import 'dart:html';
+import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:erasmusopportunities/helpers/countries.dart';
@@ -16,6 +15,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_progress_button/flutter_progress_button.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker_web/image_picker_web.dart';
+import 'package:firebase/firebase.dart' as fb;
 
 
 class Home extends StatefulWidget {
@@ -46,27 +46,9 @@ class _HomeState extends State<Home> {
     }
   }
 
-  File pickedPostImage;
-  pickPostImage() async {
-    /// You can set the parameter asUint8List to true
-    /// to get only the bytes from the image
-    /* Uint8List bytesFromPicker =
-        await ImagePickerWeb.getImage(outputType: ImageType.bytes);
+  Uint8List pickedPostImage;
 
-    if (bytesFromPicker != null) {
-      debugPrint(bytesFromPicker.toString());
-    } */
 
-    /// Default behavior would be getting the Image.memory
-    File fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.file);
-
-    if (fromPicker != null) {
-      setState(() {
-        pickedPostImage = fromPicker;
-        print(pickedPostImage);
-      });
-    }
-  }
 
   String videoSRC;
   pickVideo() async {
@@ -92,6 +74,35 @@ class _HomeState extends State<Home> {
   var _addCoverImageComplete = false;
   var _addPostImageComplete = false;
   var _addVideoComplete = false;
+  fb.UploadTask _uploadTask;
+
+  uploadFile(String path, Uint8List data) async {
+
+
+    try {
+      print('INNNNNNN YO');
+
+      setState(() {
+        _uploadTask = fb
+            .storage()
+            .refFromURL('gs://erasmus-opportunities.appspot.com')
+            .child("media/$path")
+            .put(data);
+      });
+
+
+//        final StorageUploadTask uploadTask = storageReference.putData(data);
+//        print('3');
+//        print(uploadTask.isSuccessful);
+//
+//        final StorageTaskSnapshot downloadUrl = (await uploadTask.onComplete);
+//        print('4');
+//        final String url = (await downloadUrl.ref.getDownloadURL());
+//        print("URL is $url");
+    } catch (error) {
+      print(error);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +114,29 @@ class _HomeState extends State<Home> {
     List<String> participatingCountries = [];
 
 
+
+    pickPostImage() async {
+      /// You can set the parameter asUint8List to true
+      /// to get only the bytes from the image
+      /* Uint8List bytesFromPicker =
+        await ImagePickerWeb.getImage(outputType: ImageType.bytes);
+
+    if (bytesFromPicker != null) {
+      debugPrint(bytesFromPicker.toString());
+    } */
+
+      /// Default behavior would be getting the Image.memory
+      Uint8List fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.bytes);
+
+      if (fromPicker != null) {
+        setState(() {
+          pickedPostImage = fromPicker;
+          _addPostImageComplete = true;
+          uploadFile('myimage.jpg', pickedPostImage);
+          //print(pickedPostImage);
+        });
+      }
+    }
 
     return Scaffold(
       backgroundColor: Color.fromRGBO(0, 68, 148, 1),
@@ -460,11 +494,8 @@ class _HomeState extends State<Home> {
                           Row(
                             children: <Widget>[
                               GestureDetector(
-                                onTap: () async {
-                                  await pickPostImage();
-                                  setState(() {
-                                    _addPostImageComplete = true;
-                                  });
+                                onTap: () {
+                                  pickPostImage();
                                 },
                                 child: Padding(
                                   padding: EdgeInsets.all(10.0),
@@ -482,7 +513,7 @@ class _HomeState extends State<Home> {
                                 child: SizedBox(
                                   width: 50,
                                   height: 50,
-                                  child: pickedPostImage != null ? Text(pickedPostImage.name) : Text(''),
+                                  child: pickedPostImage != null ? Text('YAS') : Text(''),
                                 ) ??
                                     Container(),
                               ),
