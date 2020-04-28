@@ -246,7 +246,7 @@ class _SelectionModalState extends State<SelectionModal> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Center(child: Text('Select country')),
+      title: Center(child: Text('Select countries')),
       content: Container(
         height: MediaQuery.of(context).size.height * 0.8,
         width: MediaQuery.of(context).size.width * 0.4,

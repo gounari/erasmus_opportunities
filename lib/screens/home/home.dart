@@ -22,12 +22,15 @@ class _HomeState extends State<Home> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   final DateTime startDate = DateTime.now();
 
+
   @override
   Widget build(BuildContext context) {
 
     final loginTheme = LoginTheme();
     final opportunity = FirebaseOpportunityConstants();
     final theme = _mergeTheme(theme: Theme.of(context), loginTheme: loginTheme);
+    var _participatingCountriesLabel = '';
+    List<String> participatingCountries = [];
 
     return Scaffold(
       backgroundColor: Color.fromRGBO(0, 68, 148, 1),
@@ -95,8 +98,21 @@ class _HomeState extends State<Home> {
 
                                 SizedBox(height: 20),
 
-                                FormBuilderCustomField(
+                                FormBuilderDropdown(
                                   attribute: opportunity.venueCountry,
+                                  hint: Text('Venue Country'),
+                                  validators: [FormBuilderValidators.required()],
+                                  items: ['Cyprus', 'Greece']
+                                      .map((type) => DropdownMenuItem(
+                                      value: type,
+                                      child: Text("$type")
+                                  )).toList(),
+                                ),
+
+                                SizedBox(height: 20),
+
+                                FormBuilderCustomField(
+                                  attribute: opportunity.participatingCountries,
                                   formField: FormField(
                                     enabled: true,
                                     builder: (FormFieldState<dynamic> field) {
@@ -104,17 +120,34 @@ class _HomeState extends State<Home> {
                                         decoration: InputDecoration(
                                           border: InputBorder.none,
                                           errorText: field.errorText,
-                                          labelText: "Venue Country",
+                                          labelText: _participatingCountriesLabel,
                                         ),
-                                        child: Container(
-                                          child: MultiSelect(
-                                              autovalidate: false,
-                                              dataSource: countries,
-                                              textField: 'name',
-                                              valueField: 'name',
-                                              filterable: true,
-                                              required: false,
-                                          ),
+                                        child: MultiSelect(
+                                          autovalidate: false,
+                                          dataSource: countries,
+                                          textField: 'name',
+                                          valueField: 'name',
+                                          filterable: true,
+                                          required: true,
+                                          onSaved: (value) {
+                                            setState(() {
+                                              participatingCountries = [];
+                                              for (var location in value) {
+                                                participatingCountries.add(location.toString());
+                                              }
+                                            });
+                                          },
+                                          change: (List value) {
+                                            setState(() {
+                                              if (value != null && value.isNotEmpty) {
+                                                print(value);
+                                                _participatingCountriesLabel = 'Participating Countries';
+                                              } else {
+                                                _participatingCountriesLabel = '';
+                                              }
+                                            });
+
+                                          },
                                         ),
                                       );
                                     },
@@ -330,6 +363,7 @@ class _HomeState extends State<Home> {
                                       currentState.value[opportunity.title],
                                       currentState.value[opportunity.venueAddress],
                                       currentState.value[opportunity.venueCountry],
+                                      participatingCountries,
                                       currentState.value[opportunity.type],
                                       currentState.value[opportunity.startDate],
                                       currentState.value[opportunity.endDate],

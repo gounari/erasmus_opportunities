@@ -51,10 +51,9 @@ class MultiSelect extends FormField<dynamic> {
                       (itm) => itm[valueField] == item,
                   orElse: () => null);
               if (existingItem != null) {
-                selectedOptions.add(Chip(
-                  label: Text(existingItem[textField],
+                selectedOptions.add(Text(existingItem[textField],
                     overflow: TextOverflow.ellipsis,),
-                ));
+                );
               }
             });
           }
@@ -108,8 +107,8 @@ class MultiSelect extends FormField<dynamic> {
                     child: Text(
                       hintText,
                       style: TextStyle(
-                        color: Colors.grey.shade500,
-                        fontSize: 16.0,
+                        color: Colors.grey.shade600,
+                        fontSize: 14.0,
                       ),
                     ),
                   ):
