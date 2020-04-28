@@ -102,10 +102,10 @@ class _HomeState extends State<Home> {
                                   attribute: opportunity.venueCountry,
                                   hint: Text('Venue Country'),
                                   validators: [FormBuilderValidators.required()],
-                                  items: ['Cyprus', 'Greece']
-                                      .map((type) => DropdownMenuItem(
-                                      value: type,
-                                      child: Text("$type")
+                                  items: countries
+                                      .map((country) => DropdownMenuItem(
+                                      value: country['name'],
+                                      child: Text(country['name'])
                                   )).toList(),
                                 ),
 
@@ -140,7 +140,6 @@ class _HomeState extends State<Home> {
                                           change: (List value) {
                                             setState(() {
                                               if (value != null && value.isNotEmpty) {
-                                                print(value);
                                                 _participatingCountriesLabel = 'Participating Countries';
                                               } else {
                                                 _participatingCountriesLabel = '';
