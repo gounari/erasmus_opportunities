@@ -42,7 +42,8 @@ class DatabaseService {
 
   Future updateOpportunity(
       String title,
-      String venueLocation,
+      String venueAddress,
+      String venueCountry,
       String type,
       DateTime startDate,
       DateTime endDate,
@@ -62,7 +63,8 @@ class DatabaseService {
       opportunity.title : title,
       opportunity.organisationName : organisation.name,
       opportunity.organisationUID : organisation.uid,
-      opportunity.venueLocation : venueLocation,
+      opportunity.venueAddress : venueAddress,
+      opportunity.venueCountry : venueCountry,
       opportunity.type : type,
       opportunity.startDate : startDate,
       opportunity.endDate : endDate,

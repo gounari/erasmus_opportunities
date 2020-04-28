@@ -84,8 +84,18 @@ class _HomeState extends State<Home> {
                                 SizedBox(height: 20),
 
                                 FormBuilderTextField(
-                                  attribute: opportunity.venueLocation,
-                                  decoration: InputDecoration(labelText: "Venue Location"),
+                                  attribute: opportunity.venueAddress,
+                                  decoration: InputDecoration(labelText: "Venue Address"),
+                                  validators: [
+                                    FormBuilderValidators.required(),
+                                  ],
+                                ),
+
+                                SizedBox(height: 20),
+
+                                FormBuilderTextField(
+                                  attribute: opportunity.venueCountry,
+                                  decoration: InputDecoration(labelText: "Venue Country"),
                                   validators: [
                                     FormBuilderValidators.required(),
                                   ],
@@ -298,7 +308,8 @@ class _HomeState extends State<Home> {
                                     await DatabaseService(uid: user.uid)
                                         .updateOpportunity(
                                       currentState.value[opportunity.title],
-                                      currentState.value[opportunity.venueLocation],
+                                      currentState.value[opportunity.venueAddress],
+                                      currentState.value[opportunity.venueCountry],
                                       currentState.value[opportunity.type],
                                       currentState.value[opportunity.startDate],
                                       currentState.value[opportunity.endDate],
