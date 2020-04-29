@@ -11,6 +11,7 @@ import 'package:erasmusopportunities/screens/services/database.dart';
 import 'package:erasmusopportunities/widgets/multiselect.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_progress_button/flutter_progress_button.dart';
 import 'package:intl/intl.dart';
@@ -25,28 +26,33 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-  Image pickedCoverImage;
+  Uint8List pickedCoverImage;
   pickCoverImage() async {
-    /// You can set the parameter asUint8List to true
-    /// to get only the bytes from the image
-    /* Uint8List bytesFromPicker =
-        await ImagePickerWeb.getImage(outputType: ImageType.bytes);
 
-    if (bytesFromPicker != null) {
-      debugPrint(bytesFromPicker.toString());
-    } */
-
-    /// Default behavior would be getting the Image.memory
-    Image fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.widget);
+    Uint8List fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.bytes);
 
     if (fromPicker != null) {
       setState(() {
         pickedCoverImage = fromPicker;
+        _addCoverImageComplete = true;
+        uploadFile('myimageCover.jpg', pickedCoverImage);
       });
     }
   }
 
   Uint8List pickedPostImage;
+  pickPostImage() async {
+
+    Uint8List fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.bytes);
+
+    if (fromPicker != null) {
+      setState(() {
+        pickedPostImage = fromPicker;
+        _addPostImageComplete = true;
+        uploadFile('myimagePost.jpg', pickedPostImage);
+      });
+    }
+  }
 
 
 
@@ -89,18 +95,8 @@ class _HomeState extends State<Home> {
             .child("media/$path")
             .put(data);
       });
-
-
-//        final StorageUploadTask uploadTask = storageReference.putData(data);
-//        print('3');
-//        print(uploadTask.isSuccessful);
-//
-//        final StorageTaskSnapshot downloadUrl = (await uploadTask.onComplete);
-//        print('4');
-//        final String url = (await downloadUrl.ref.getDownloadURL());
-//        print("URL is $url");
     } catch (error) {
-      print(error);
+      print("Error: " + error);
     }
   }
 
@@ -113,30 +109,6 @@ class _HomeState extends State<Home> {
     var _participatingCountriesLabel = '';
     List<String> participatingCountries = [];
 
-
-
-    pickPostImage() async {
-      /// You can set the parameter asUint8List to true
-      /// to get only the bytes from the image
-      /* Uint8List bytesFromPicker =
-        await ImagePickerWeb.getImage(outputType: ImageType.bytes);
-
-    if (bytesFromPicker != null) {
-      debugPrint(bytesFromPicker.toString());
-    } */
-
-      /// Default behavior would be getting the Image.memory
-      Uint8List fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.bytes);
-
-      if (fromPicker != null) {
-        setState(() {
-          pickedPostImage = fromPicker;
-          _addPostImageComplete = true;
-          uploadFile('myimage.jpg', pickedPostImage);
-          //print(pickedPostImage);
-        });
-      }
-    }
 
     return Scaffold(
       backgroundColor: Color.fromRGBO(0, 68, 148, 1),
@@ -444,10 +416,7 @@ class _HomeState extends State<Home> {
                             children: <Widget>[
                               GestureDetector(
                                 onTap: () async {
-                                  await pickCoverImage();
-                                  setState(() {
-                                    _addCoverImageComplete = true;
-                                  });
+                                  pickCoverImage();
                                 },
                                 child: Padding(
                                   padding: EdgeInsets.all(10.0),
@@ -465,7 +434,7 @@ class _HomeState extends State<Home> {
                                 child: SizedBox(
                                   width: 50,
                                   height: 50,
-                                  child: pickedCoverImage,
+                                  child: pickedCoverImage != null ? Image.memory(pickedCoverImage) : Text(''),
                                 ) ??
                                     Container(),
                               ),
@@ -513,7 +482,7 @@ class _HomeState extends State<Home> {
                                 child: SizedBox(
                                   width: 50,
                                   height: 50,
-                                  child: pickedPostImage != null ? Text('YAS') : Text(''),
+                                  child: pickedPostImage != null ? Image.memory(pickedPostImage) : Text(''),
                                 ) ??
                                     Container(),
                               ),
@@ -628,6 +597,8 @@ class _HomeState extends State<Home> {
                                       currentState.value[opportunity.description],
                                       Timestamp.now(),
                                     );
+
+                                    //await ashajh();
 
                                     currentState.reset();
                                     final snackBar = SnackBar(
