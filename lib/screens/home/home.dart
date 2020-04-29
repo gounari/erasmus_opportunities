@@ -16,7 +16,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_progress_button/flutter_progress_button.dart';
 import 'package:intl/intl.dart';
 import 'package:image_picker_web/image_picker_web.dart';
-import 'package:firebase/firebase.dart' as fb;
+
 
 
 class Home extends StatefulWidget {
@@ -35,7 +35,6 @@ class _HomeState extends State<Home> {
       setState(() {
         pickedCoverImage = fromPicker;
         _addCoverImageComplete = true;
-        uploadFile('myimageCover.jpg', pickedCoverImage);
       });
     }
   }
@@ -49,7 +48,6 @@ class _HomeState extends State<Home> {
       setState(() {
         pickedPostImage = fromPicker;
         _addPostImageComplete = true;
-        uploadFile('myimagePost.jpg', pickedPostImage);
       });
     }
   }
@@ -80,25 +78,7 @@ class _HomeState extends State<Home> {
   var _addCoverImageComplete = false;
   var _addPostImageComplete = false;
   var _addVideoComplete = false;
-  fb.UploadTask _uploadTask;
 
-  uploadFile(String path, Uint8List data) async {
-
-
-    try {
-      print('INNNNNNN YO');
-
-      setState(() {
-        _uploadTask = fb
-            .storage()
-            .refFromURL('gs://erasmus-opportunities.appspot.com')
-            .child("media/$path")
-            .put(data);
-      });
-    } catch (error) {
-      print("Error: " + error);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -596,11 +576,12 @@ class _HomeState extends State<Home> {
                                       currentState.value[opportunity.provideForDisabilities],
                                       currentState.value[opportunity.description],
                                       Timestamp.now(),
+                                      pickedCoverImage,
+                                      pickedPostImage,
                                     );
 
-                                    //await ashajh();
-
                                     currentState.reset();
+
                                     final snackBar = SnackBar(
                                       content: Text('Opportunity succesfully published!'),
                                       backgroundColor: Colors.green,

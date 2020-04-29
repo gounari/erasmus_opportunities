@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:erasmusopportunities/helpers/firebase_constants.dart';
 import 'package:erasmusopportunities/models/organisation.dart';
+import 'package:firebase/firebase.dart' as fb;
 
 class DatabaseService {
 
@@ -11,6 +14,22 @@ class DatabaseService {
   // Collection references
   final CollectionReference organisationsCollection = Firestore.instance.collection('organisations');
   final CollectionReference opportunitiesCollection = Firestore.instance.collection(opportunity.collection);
+
+  fb.UploadTask _uploadTask;
+
+  uploadFile(String path, Uint8List data) async {
+    try {
+      _uploadTask = fb
+          .storage()
+          .refFromURL('gs://erasmus-opportunities.appspot.com')
+          .child("opportunities_media/$path")
+          .put(data);
+
+    } catch (error) {
+      print("Error uploading image: " + error);
+    }
+  }
+
 
   Future updateUserData(String name, String email, String location) async {
     return await organisationsCollection.document(uid).setData({
@@ -40,7 +59,7 @@ class DatabaseService {
     return user;
   }
 
-  Future updateOpportunity(
+  updateOpportunity(
       String title,
       String venueAddress,
       String venueCountry,
@@ -58,10 +77,13 @@ class DatabaseService {
       List provideForDisabilities,
       String description,
       Timestamp timestamp,
+      Uint8List coverImage,
+      Uint8List postImage,
       )
   async {
     Organisation organisation = await getUserData();
-    return await opportunitiesCollection.document().setData({
+    final docRef = opportunitiesCollection.document();
+    await docRef.setData({
       opportunity.title : title,
       opportunity.organisationName : organisation.name,
       opportunity.organisationUID : organisation.uid,
@@ -82,6 +104,8 @@ class DatabaseService {
       opportunity.description : description,
       opportunity.timestamp : timestamp,
     });
+    uploadFile(docRef.documentID + "_cover.jpg", coverImage);
+    uploadFile(docRef.documentID + "_post.jpg", postImage);
   }
 
 }
