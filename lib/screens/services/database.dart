@@ -76,7 +76,6 @@ class DatabaseService {
       String applicationLink,
       List provideForDisabilities,
       String description,
-      Timestamp timestamp,
       Uint8List coverImage,
       Uint8List postImage,
       Uint8List postVideo,
@@ -88,7 +87,7 @@ class DatabaseService {
       opportunity.title : title,
       opportunity.organisationName : organisation.name,
       opportunity.organisationUID : organisation.uid,
-      opportunity.venueAddress : venueAddress,
+      opportunity.venueAddress : venueAddress.trim(),
       opportunity.venueCountry : venueCountry,
       opportunity.participatingCountries : participatingCountries,
       opportunity.type : type,
@@ -103,7 +102,7 @@ class DatabaseService {
       opportunity.applicationLink : applicationLink,
       opportunity.provideForDisabilities : provideForDisabilities,
       opportunity.description : description,
-      opportunity.timestamp : timestamp,
+      opportunity.timestamp : Timestamp.now(),
     });
     uploadFile(docRef.documentID + "_cover.jpg", coverImage);
     uploadFile(docRef.documentID + "_post.jpg", postImage);

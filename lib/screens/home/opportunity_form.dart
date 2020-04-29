@@ -74,12 +74,13 @@ class _OpportunityCardState extends State<OpportunityCard> {
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   final opportunity = FirebaseOpportunityConstants();
   final DateTime startDate = DateTime.now();
+  var _venueCountryLabel = '';
   var _participatingCountriesLabel = '';
   List<String> participatingCountriesList = [];
-  var _opportunityPublished = false;
+  var _typeLabel = '';
   var _topicsLabel = '';
   List<String> topicsList = [];
-  var _topics = false;
+  var _opportunityPublished = false;
 
   @override
   Widget build(BuildContext context) {
@@ -134,12 +135,22 @@ class _OpportunityCardState extends State<OpportunityCard> {
                         FormBuilderDropdown(
                           attribute: opportunity.venueCountry,
                           hint: Text('Venue Country'),
+                          decoration: InputDecoration(labelText: _venueCountryLabel),
                           validators: [FormBuilderValidators.required()],
                           items: countries
                               .map((country) => DropdownMenuItem(
                               value: country['name'],
                               child: Text(country['name'])
                           )).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              if (value != null && value.isNotEmpty) {
+                                _venueCountryLabel = 'Venue Country';
+                              } else {
+                                _venueCountryLabel = '';
+                              }
+                            });
+                          },
                         ),
 
                         SizedBox(height: 20),
@@ -179,7 +190,6 @@ class _OpportunityCardState extends State<OpportunityCard> {
                                         _participatingCountriesLabel = '';
                                       }
                                     });
-
                                   },
                                 ),
                               );
@@ -191,13 +201,23 @@ class _OpportunityCardState extends State<OpportunityCard> {
 
                         FormBuilderDropdown(
                           attribute: opportunity.type,
-                          hint: Text('Select Type'),
+                          hint: Text('Type'),
+                          decoration: InputDecoration(labelText: _typeLabel),
                           validators: [FormBuilderValidators.required()],
                           items: ['Youth Exchange', 'Training Course']
                               .map((type) => DropdownMenuItem(
                               value: type,
                               child: Text("$type")
                           )).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              if (value != null && value.isNotEmpty) {
+                                _typeLabel = 'Type';
+                              } else {
+                                _typeLabel = '';
+                              }
+                            });
+                          },
                         ),
 
                         SizedBox(height: 20),
@@ -580,7 +600,6 @@ class _OpportunityCardState extends State<OpportunityCard> {
                               currentState.value[opportunity.applicationLink],
                               currentState.value[opportunity.provideForDisabilities],
                               currentState.value[opportunity.description],
-                              Timestamp.now(),
                               pickedCoverImage,
                               pickedPostImage,
                               pickedVideo,
