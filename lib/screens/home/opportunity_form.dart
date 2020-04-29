@@ -75,6 +75,7 @@ class _OpportunityCardState extends State<OpportunityCard> {
   final DateTime startDate = DateTime.now();
   var _participatingCountriesLabel = '';
   List<String> participatingCountries = [];
+  var _ooportunityPublished = false;
 
   @override
   Widget build(BuildContext context) {
@@ -558,13 +559,15 @@ class _OpportunityCardState extends State<OpportunityCard> {
                               pickedVideo,
                             );
 
+                            setState(() {
+                              _ooportunityPublished = true;
+                            });
+
                             final snackBar = SnackBar(
                               content: Text('Opportunity succesfully published!'),
                               backgroundColor: Colors.green,
                             );
                             Scaffold.of(context).showSnackBar(snackBar);
-
-                            currentState.reset();
 
                           }
 
@@ -581,15 +584,8 @@ class _OpportunityCardState extends State<OpportunityCard> {
                     );
                   },
                 ),
-                MaterialButton(
-                  child: Text(
-                    "Reset",
-                    style: TextStyle(color: Color.fromRGBO(0, 68, 148, 1),),
-                  ),
-                  onPressed: () {
-                    _fbKey.currentState.reset();
-                  },
-                ),
+                SizedBox(width: 20.0,),
+                Text(_ooportunityPublished? 'Your opportunity is now live 🙌 🎉' : ''),
               ],
             )
           ],

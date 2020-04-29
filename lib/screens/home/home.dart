@@ -45,7 +45,7 @@ class _HomeState extends State<Home> {
           });
         },
         icon: Icon(Icons.refresh),
-        label: Text("Reset"),
+        label: Text("New"),
         foregroundColor: Colors.black,
         backgroundColor: Colors.yellowAccent,
       ),
