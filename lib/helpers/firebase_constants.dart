@@ -13,7 +13,7 @@ class FirebaseOpportunityConstants {
     this.endDate: opportunityEndDate,
     this.lowAge: opportunityLowAge,
     this.highAge: opportunityHighAge,
-    this.topic: opportunityTopic,
+    this.topics: opportunityTopics,
     this.applicationDeadline: opportunityApplicationDeadline,
     this.participationCost: opportunityParticipationCost,
     this.reimbursementLimit: opportunityReimbursementLimit,
@@ -35,7 +35,7 @@ class FirebaseOpportunityConstants {
   static const opportunityEndDate = 'endDate';
   static const opportunityLowAge = 'lowAge';
   static const opportunityHighAge = 'highAge';
-  static const opportunityTopic = 'topic';
+  static const opportunityTopics = 'topics';
   static const opportunityApplicationDeadline = 'applicationDeadline';
   static const opportunityParticipationCost = 'participationCost';
   static const opportunityReimbursementLimit = 'reimbursementLimit';
@@ -56,7 +56,7 @@ class FirebaseOpportunityConstants {
   final String endDate;
   final String lowAge;
   final String highAge;
-  final String topic;
+  final String topics;
   final String applicationDeadline;
   final String participationCost;
   final String reimbursementLimit;

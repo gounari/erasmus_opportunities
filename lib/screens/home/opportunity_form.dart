@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:erasmusopportunities/helpers/countries.dart';
 import 'package:erasmusopportunities/helpers/firebase_constants.dart';
 import 'package:erasmusopportunities/helpers/theme.dart';
+import 'package:erasmusopportunities/helpers/topics.dart';
 import 'package:erasmusopportunities/onboarding/providers/login_theme.dart';
 import 'package:erasmusopportunities/screens/services/auth.dart';
 import 'package:erasmusopportunities/screens/services/database.dart';
@@ -74,8 +75,11 @@ class _OpportunityCardState extends State<OpportunityCard> {
   final opportunity = FirebaseOpportunityConstants();
   final DateTime startDate = DateTime.now();
   var _participatingCountriesLabel = '';
-  List<String> participatingCountries = [];
-  var _ooportunityPublished = false;
+  List<String> participatingCountriesList = [];
+  var _opportunityPublished = false;
+  var _topicsLabel = '';
+  List<String> topicsList = [];
+  var _topics = false;
 
   @override
   Widget build(BuildContext context) {
@@ -161,9 +165,9 @@ class _OpportunityCardState extends State<OpportunityCard> {
                                   required: true,
                                   onSaved: (value) {
                                     setState(() {
-                                      participatingCountries = [];
+                                      participatingCountriesList = [];
                                       for (var location in value) {
-                                        participatingCountries.add(location.toString());
+                                        participatingCountriesList.add(location.toString());
                                       }
                                     });
                                   },
@@ -264,24 +268,47 @@ class _OpportunityCardState extends State<OpportunityCard> {
 
                         SizedBox(height: 20),
 
-                        FormBuilderDropdown(
-                          attribute: opportunity.topic,
-                          hint: Text('Select Topic'),
-                          validators: [FormBuilderValidators.required()],
-                          items: ['Social Challenges',
-                            'Reception and integration of refugees and migrants',
-                            'Citizenship and democratic participation',
-                            'Disaster prevention and recovery',
-                            'Enviroment and natural protection',
-                            'Health and wellbeing',
-                            'Education and training',
-                            'Employment and entrepreneurship',
-                            'Creativity and culture',
-                            'Physical education and sport']
-                              .map((topic) => DropdownMenuItem(
-                              value: topic,
-                              child: Text("$topic")
-                          )).toList(),
+                        FormBuilderCustomField(
+                          attribute: opportunity.topics,
+                          formField: FormField(
+                            enabled: true,
+                            builder: (FormFieldState<dynamic> field) {
+                              return InputDecorator(
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  errorText: field.errorText,
+                                  labelText: _topicsLabel,
+                                ),
+                                child: MultiSelect(
+                                  hintText: 'Topics',
+                                  autovalidate: false,
+                                  dataSource: topics,
+                                  textField: 'topic',
+                                  valueField: 'topic',
+                                  filterable: true,
+                                  required: true,
+                                  onSaved: (value) {
+                                    setState(() {
+                                      topicsList = [];
+                                      for (var topic in value) {
+                                        topicsList.add(topic.toString());
+                                      }
+                                    });
+                                  },
+                                  change: (List value) {
+                                    setState(() {
+                                      if (value != null && value.isNotEmpty) {
+                                        _topicsLabel = 'Topics';
+                                      } else {
+                                        _topicsLabel = '';
+                                      }
+                                    });
+
+                                  },
+                                ),
+                              );
+                            },
+                          ),
                         ),
 
                         SizedBox(height: 20),
@@ -540,13 +567,13 @@ class _OpportunityCardState extends State<OpportunityCard> {
                               currentState.value[opportunity.title],
                               currentState.value[opportunity.venueAddress],
                               currentState.value[opportunity.venueCountry],
-                              participatingCountries,
+                              participatingCountriesList,
                               currentState.value[opportunity.type],
                               currentState.value[opportunity.startDate],
                               currentState.value[opportunity.endDate],
                               currentState.value[opportunity.lowAge],
                               currentState.value[opportunity.highAge],
-                              currentState.value[opportunity.topic],
+                              topicsList,
                               currentState.value[opportunity.applicationDeadline],
                               currentState.value[opportunity.participationCost],
                               currentState.value[opportunity.reimbursementLimit],
@@ -560,7 +587,7 @@ class _OpportunityCardState extends State<OpportunityCard> {
                             );
 
                             setState(() {
-                              _ooportunityPublished = true;
+                              _opportunityPublished = true;
                             });
 
                             final snackBar = SnackBar(
@@ -585,7 +612,7 @@ class _OpportunityCardState extends State<OpportunityCard> {
                   },
                 ),
                 SizedBox(width: 20.0,),
-                Text(_ooportunityPublished? 'Your opportunity is now live 🙌 🎉' : ''),
+                Text(_opportunityPublished? 'Your opportunity is now live 🙌 🎉' : ''),
               ],
             )
           ],
