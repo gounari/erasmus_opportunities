@@ -392,6 +392,7 @@ class _OpportunityCardState extends State<OpportunityCard> {
                       border: OutlineInputBorder(),
                       labelText: 'You can provide:',
                     ),
+                    activeColor: Color.fromRGBO(0, 68, 148, 1),
                     attribute: opportunity.provideForDisabilities,
                     options: [
                       FormBuilderFieldOption(value: "Additional mentoring or other support suitable for young people with obstacles, educational difficulties, cultural differences or similar."),
