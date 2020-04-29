@@ -12,6 +12,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   final AuthService _auth = AuthService();
+  int _count = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +37,32 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
+
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          setState(() {
+            _count += 1;
+          });
+        },
+        icon: Icon(Icons.refresh),
+        label: Text("Reset"),
+        foregroundColor: Colors.black,
+        backgroundColor: Colors.yellowAccent,
+      ),
       body: SingleChildScrollView(
         child: Container(
           child: Padding(
             padding: const EdgeInsets.all(30.0),
-            child:  OpportunityCard(auth: _auth),
+            child:  AnimatedSwitcher(
+              duration: Duration(milliseconds: 0),
+              child: OpportunityCard(
+                // This key causes the AnimatedSwitcher to interpret this as a "new"
+                // child each time the count changes, so that it will begin its animation
+                // when the count changes.
+                key: ValueKey<int>(_count),
+                auth: _auth,
+              ),
+            ),
           ),
         ),
       ),

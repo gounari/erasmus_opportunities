@@ -81,7 +81,6 @@ class _OpportunityCardState extends State<OpportunityCard> {
     final loginTheme = LoginTheme();
     final theme = mergeTheme(theme: Theme.of(context), loginTheme: loginTheme);
 
-
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
@@ -111,6 +110,7 @@ class _OpportunityCardState extends State<OpportunityCard> {
                           validators: [
                             FormBuilderValidators.required(),
                           ],
+                          initialValue: '',
                         ),
 
                         SizedBox(height: 20),
@@ -121,6 +121,7 @@ class _OpportunityCardState extends State<OpportunityCard> {
                           validators: [
                             FormBuilderValidators.required(),
                           ],
+                          initialValue: '',
                         ),
 
                         SizedBox(height: 20),
@@ -241,6 +242,7 @@ class _OpportunityCardState extends State<OpportunityCard> {
                                     FormBuilderValidators.min(0),
                                     FormBuilderValidators.required(),
                                   ],
+                                  initialValue: '',
                                 ),
                               ),
                               SizedBox(width: 20.0,),
@@ -253,6 +255,7 @@ class _OpportunityCardState extends State<OpportunityCard> {
                                     FormBuilderValidators.max(150),
                                     FormBuilderValidators.required(),
                                   ],
+                                  initialValue: '',
                                 ),
                               ),
                             ]
@@ -300,6 +303,7 @@ class _OpportunityCardState extends State<OpportunityCard> {
                             FormBuilderValidators.numeric(),
                             FormBuilderValidators.required(),
                           ],
+                          initialValue: '',
                         ),
 
                         SizedBox(height: 20),
@@ -311,6 +315,7 @@ class _OpportunityCardState extends State<OpportunityCard> {
                             FormBuilderValidators.numeric(),
                             FormBuilderValidators.required(),
                           ],
+                          initialValue: '',
                         ),
 
                         SizedBox(height: 20),
@@ -322,6 +327,7 @@ class _OpportunityCardState extends State<OpportunityCard> {
                             FormBuilderValidators.url(),
                             FormBuilderValidators.required(),
                           ],
+                          initialValue: '',
                         ),
 
                         SizedBox(height: 20),
@@ -357,6 +363,7 @@ class _OpportunityCardState extends State<OpportunityCard> {
                       validators: [
                         FormBuilderValidators.required(),
                       ],
+                      initialValue: '',
                     ),
                   ),
 
@@ -551,13 +558,14 @@ class _OpportunityCardState extends State<OpportunityCard> {
                               pickedVideo,
                             );
 
-                            currentState.reset();
-
                             final snackBar = SnackBar(
                               content: Text('Opportunity succesfully published!'),
                               backgroundColor: Colors.green,
                             );
                             Scaffold.of(context).showSnackBar(snackBar);
+
+                            currentState.reset();
+
                           }
 
                         } catch (error) {
