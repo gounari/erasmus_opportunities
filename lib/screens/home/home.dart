@@ -27,6 +27,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   Uint8List pickedCoverImage;
+  var _addCoverImageComplete = false;
   pickCoverImage() async {
 
     Uint8List fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.bytes);
@@ -40,6 +41,7 @@ class _HomeState extends State<Home> {
   }
 
   Uint8List pickedPostImage;
+  var _addPostImageComplete = false;
   pickPostImage() async {
 
     Uint8List fromPicker = await ImagePickerWeb.getImage(outputType: ImageType.bytes);
@@ -52,32 +54,25 @@ class _HomeState extends State<Home> {
     }
   }
 
-
-
-  String videoSRC;
+  Uint8List pickedVideo;
+  var _addVideoComplete = false;
   pickVideo() async {
-    final videoMetaData = await ImagePickerWeb.getVideo(outputType: VideoType.bytes);
-
-    debugPrint('---Picked Video Bytes---');
-    debugPrint(videoMetaData.toString());
-
-    /// >>> Upload your video in Bytes now to any backend <<<
-    /// >>> Disclaimer: local files are not working till now! [February 2020] <<<
+    Uint8List videoMetaData = await ImagePickerWeb.getVideo(outputType: VideoType.bytes);
 
     if (videoMetaData != null) {
       setState(() {
-        videoSRC = 'https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4';
+        pickedVideo = videoMetaData;
+        _addVideoComplete = true;
       });
     }
   }
 
-
   final AuthService _auth = AuthService();
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   final DateTime startDate = DateTime.now();
-  var _addCoverImageComplete = false;
-  var _addPostImageComplete = false;
-  var _addVideoComplete = false;
+
+
+
 
 
   @override
@@ -516,7 +511,7 @@ class _HomeState extends State<Home> {
                                 onTap: () {
                                   setState(() {
                                     _addVideoComplete = false;
-                                    videoSRC = '';
+                                    pickedVideo = null;
                                   });
                                 },
                                 child: Padding(
@@ -578,6 +573,7 @@ class _HomeState extends State<Home> {
                                       Timestamp.now(),
                                       pickedCoverImage,
                                       pickedPostImage,
+                                      pickedVideo,
                                     );
 
                                     currentState.reset();

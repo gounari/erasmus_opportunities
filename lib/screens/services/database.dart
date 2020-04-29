@@ -79,6 +79,7 @@ class DatabaseService {
       Timestamp timestamp,
       Uint8List coverImage,
       Uint8List postImage,
+      Uint8List postVideo,
       )
   async {
     Organisation organisation = await getUserData();
@@ -106,6 +107,7 @@ class DatabaseService {
     });
     uploadFile(docRef.documentID + "_cover.jpg", coverImage);
     uploadFile(docRef.documentID + "_post.jpg", postImage);
+    uploadFile(docRef.documentID + "_video.mp4", postVideo);
   }
 
 }
