@@ -70,9 +70,8 @@ class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
   final DateTime startDate = DateTime.now();
-
-
-
+  var _participatingCountriesLabel = '';
+  List<String> participatingCountries = [];
 
 
   @override
@@ -81,8 +80,7 @@ class _HomeState extends State<Home> {
     final loginTheme = LoginTheme();
     final opportunity = FirebaseOpportunityConstants();
     final theme = _mergeTheme(theme: Theme.of(context), loginTheme: loginTheme);
-    var _participatingCountriesLabel = '';
-    List<String> participatingCountries = [];
+
 
 
     return Scaffold(
@@ -176,6 +174,7 @@ class _HomeState extends State<Home> {
                                           labelText: _participatingCountriesLabel,
                                         ),
                                         child: MultiSelect(
+                                          hintText: 'Participating Countries',
                                           autovalidate: false,
                                           dataSource: countries,
                                           textField: 'name',
