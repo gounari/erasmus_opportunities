@@ -69,6 +69,8 @@ class _HomeState extends State<Home> {
 
   final AuthService _auth = AuthService();
   final GlobalKey<FormBuilderState> _fbKey = GlobalKey<FormBuilderState>();
+  final loginTheme = LoginTheme();
+  final opportunity = FirebaseOpportunityConstants();
   final DateTime startDate = DateTime.now();
   var _participatingCountriesLabel = '';
   List<String> participatingCountries = [];
@@ -76,12 +78,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-
-    final loginTheme = LoginTheme();
-    final opportunity = FirebaseOpportunityConstants();
     final theme = _mergeTheme(theme: Theme.of(context), loginTheme: loginTheme);
-
-
 
     return Scaffold(
       backgroundColor: Color.fromRGBO(0, 68, 148, 1),
