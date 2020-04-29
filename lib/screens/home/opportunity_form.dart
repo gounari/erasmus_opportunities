@@ -154,7 +154,7 @@ class _OpportunityCardState extends State<OpportunityCard> {
                                 child: MultiSelect(
                                   hintText: 'Participating Countries',
                                   autovalidate: false,
-                                  dataSource: countries,
+                                  dataSource: countriesWithAll,
                                   textField: 'name',
                                   valueField: 'name',
                                   filterable: true,
