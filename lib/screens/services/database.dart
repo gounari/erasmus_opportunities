@@ -15,18 +15,18 @@ class DatabaseService {
   final CollectionReference organisationsCollection = Firestore.instance.collection('organisations');
   final CollectionReference opportunitiesCollection = Firestore.instance.collection(opportunity.collection);
 
-  fb.UploadTask _uploadTask;
-
-  uploadFile(String path, Uint8List data) async {
+  Future<Uri> uploadFile(String path, Uint8List data) async {
     try {
-      _uploadTask = fb
+      var ref = fb
           .storage()
           .refFromURL('gs://erasmus-opportunities.appspot.com')
-          .child("opportunities_media/$path")
-          .put(data);
+          .child("opportunities_media/$path");
+      await ref.put(data).future;
+
+      return ref.getDownloadURL();
 
     } catch (error) {
-      print("Error uploading image: " + error);
+      print('Error uploading media $error');
     }
   }
 
@@ -83,6 +83,22 @@ class DatabaseService {
   async {
     Organisation organisation = await getUserData();
     final docRef = opportunitiesCollection.document();
+    String coverImageUri;
+    await uploadFile(docRef.documentID + "_cover.jpg", coverImage)
+        .then((value) => coverImageUri = value.toString())
+        .catchError((error) => print('Error getting cover image uri $error'));
+
+    String postImageUri;
+    await uploadFile(docRef.documentID + "_post.jpg", postImage)
+        .then((value) => postImageUri = value.toString())
+        .catchError((error) => print('Error getting post image uri $error'));
+
+    String postVideoUri;
+    await uploadFile(docRef.documentID + "_video.mp4", postVideo)
+        .then((value) => postVideoUri = value.toString())
+        .catchError((error) => print('Error getting post video uri $error'));
+
+
     await docRef.setData({
       opportunity.title : title,
       opportunity.organisationName : organisation.name,
@@ -103,10 +119,10 @@ class DatabaseService {
       opportunity.provideForDisabilities : provideForDisabilities,
       opportunity.description : description,
       opportunity.timestamp : Timestamp.now(),
-    });
-    uploadFile(docRef.documentID + "_cover.jpg", coverImage);
-    uploadFile(docRef.documentID + "_post.jpg", postImage);
-    uploadFile(docRef.documentID + "_video.mp4", postVideo);
+      opportunity.coverImage : coverImageUri,
+      opportunity.postImage : postImageUri,
+      opportunity.postVideo : postVideoUri,
+    }).catchError((err) => print('Opportunity data upload: $err'));
   }
 
 }
