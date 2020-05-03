@@ -7,4 +7,5 @@ List<Map<String,String>> topics = [{ 'topic' : 'Social Challenges'},
 { 'topic' : 'Education and training'},
 { 'topic' : 'Employment and entrepreneurship'},
 { 'topic' : 'Creativity and culture'},
-{ 'topic' : 'Physical education and sport'}];
+{ 'topic' : 'Physical education and sport'},
+{ 'topic' : 'Other'}];

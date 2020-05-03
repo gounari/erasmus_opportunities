@@ -224,7 +224,7 @@ class _SelectionModalState extends State<SelectionModal> {
                   ),
                   filled: true,
                   hintText: "Search...",
-                  fillColor: Colors.white,
+                  fillColor: Colors.blue[50],
                   suffix: SizedBox(
                       height: 15.0,
                       child: IconButton(

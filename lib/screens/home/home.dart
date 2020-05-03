@@ -55,12 +55,14 @@ class _HomeState extends State<Home> {
             padding: const EdgeInsets.all(30.0),
             child:  AnimatedSwitcher(
               duration: Duration(milliseconds: 0),
-              child: OpportunityCard(
-                // This key causes the AnimatedSwitcher to interpret this as a "new"
-                // child each time the count changes, so that it will begin its animation
-                // when the count changes.
-                key: ValueKey<int>(_count),
-                auth: _auth,
+              child: Center(
+                child: OpportunityCard(
+                  // This key causes the AnimatedSwitcher to interpret this as a "new"
+                  // child each time the count changes, so that it will begin its animation
+                  // when the count changes.
+                  key: ValueKey<int>(_count),
+                  auth: _auth,
+                ),
               ),
             ),
           ),
