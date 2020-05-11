@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "519282062390",
+    "firebase_url": "https://erasmus-opportunities.firebaseio.com",
+    "project_id": "erasmus-opportunities",
+    "storage_bucket": "erasmus-opportunities.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:519282062390:android:af1b2fd0a9dee6dc2bd497",
+        "android_client_info": {
+          "package_name": "com.argyro.erasmusopportunities"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "519282062390-fuk5if6mvqiv8sjqb31s0mm93f91dqrl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.argyro.erasmusopportunities",
+            "certificate_hash": "88c74d8e26e22957ed0e45aaf6a8f5de2fc06f02"
+          }
+        },
+        {
+          "client_id": "519282062390-rovs520uiihkj6p4frts9t42jq81udvm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBx2j8cjTgluHefM7cSWCLNzym3Wlfl-dg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "519282062390-rovs520uiihkj6p4frts9t42jq81udvm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
